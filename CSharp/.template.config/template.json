@@ -1,0 +1,153 @@
+{
+    "author": "Summer Sun",
+    "classifications": ["Console"],
+    "name": "Azure IoT Edge Module Generator",
+    "identity": "Azure.IoT.Edge.Module.Generator.CSharp",
+    "groupIdentity": "Azure.IoT.Edge.Module.Generator",
+    "shortName": "aziotedgemodulegen",
+    "tags": {
+        "language": "C#",
+        "type": "project"
+    },
+    "preferNameDirectory": "true",
+    "SourceName": "SampleModule",
+    "primaryOutputs": [{
+        "path": ""
+    }],
+    "symbols": {
+        "moduleName": {
+            "type": "parameter",
+            "defaultValue": "SampleModule",
+            "replaces": "SampleModule"
+        },
+        "moduleType": {
+            "type": "parameter",
+            "datatype": "choice",
+            "defaultValue": "CM",
+            "choices": [{
+                    "choice": "CM",
+                    "description": "Custom Module"
+                },
+                {
+                    "choice": "AF",
+                    "description": "Azure Function"
+                },
+                {
+                    "choice": "AML",
+                    "description": "Azure Machine Learning"
+                },
+                {
+                    "choice": "ASA",
+                    "description": "Azure Stream Analytics"
+                }
+            ]
+        },
+        "skipRestore": {
+            "type": "parameter",
+            "datatype": "bool",
+            "defaultValue": "false"
+        },
+        "windows-x64": {
+            "type": "parameter",
+            "datatype": "bool",
+            "defaultValue": "true"
+        },
+        "windows-x86": {
+            "type": "parameter",
+            "datatype": "bool",
+            "defaultValue": "false"
+        },
+        "linux-64": {
+            "type": "parameter",
+            "datatype": "bool",
+            "defaultValue": "false"
+        },
+        "linux-x86": {
+            "type": "parameter",
+            "datatype": "bool",
+            "defaultValue": "false"
+        },
+        "arm-x86": {
+            "type": "parameter",
+            "datatype": "bool",
+            "defaultValue": "false"
+        }
+    },
+    "sources": [{
+        "exclude": ["Docker/**/*", ".template.config/*"],
+        "modifiers": [{
+                "condition": "(moduleType !='CM')",
+                "exclude": [
+                    "Program.cs", "SampleModule.csproj"
+                ]
+            },
+            {
+                "condition": "(moduleType =='CM' && windows-x64)",
+                "include": [
+                    "Docker/windows-x64/DockerFile"
+                ]
+            },
+            {
+                "condition": "(moduleType =='CM' && windows-x86)",
+                "include": [
+                    "Docker/windows-x86/DockerFile"
+                ]
+            },
+            {
+                "condition": "(moduleType =='CM' && linux-x64)",
+                "include": [
+                    "Docker/linux-x64/DockerFile"
+                ]
+            },
+            {
+                "condition": "(moduleType =='CM' && linux-x86)",
+                "include": [
+                    "Docker/linux-x86/DockerFile"
+                ]
+            },
+            {
+                "condition": "(moduleType =='CM' && arm-x86)",
+                "include": [
+                    "Docker/arm-x86/DockerFile"
+                ]
+            }
+        ]
+    }],
+    "postActions": [{
+            "condition": "(!skipRestore && moduleType == 'CM')",
+            "description": "Restore NuGet packages required by this project.",
+            "manualInstructions": [{
+                "text": "Run 'dotnet restore'"
+            }],
+            "actionId": "210D431B-A78B-4D2F-B762-4ED3E3EA9025",
+            "continueOnError": true
+        },
+        {
+            "condition": "(moduleType == 'AF')",
+            "description": "Open azure function module url in browser",
+            "manualInstructions": [{
+                "text": "Run 'start https://www.github.com/summersun'"
+            }],
+            "actionId": "FEA7469E-E2E7-4431-B86B-27EBC1744883",
+            "continueOnError": true
+        },
+        {
+            "condition": "(moduleType == 'AML')",
+            "description": "Open azure machine learning module url in browser",
+            "manualInstructions": [{
+                "text": "Run 'start https://www.github.com/summersun'"
+            }],
+            "actionId": "FEA7469E-E2E7-4431-B86B-27EBC1744883",
+            "continueOnError": true
+        },
+        {
+            "condition": "(moduleType == 'ASA')",
+            "description": "Open azure stream analytics module url in browser",
+            "manualInstructions": [{
+                "text": "Run 'start https://www.github.com/summersun'"
+            }],
+            "actionId": "FEA7469E-E2E7-4431-B86B-27EBC1744883",
+            "continueOnError": true
+        }
+    ]
+}
