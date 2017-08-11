@@ -57,7 +57,7 @@
             "datatype": "bool",
             "defaultValue": "false"
         },
-        "linux-64": {
+        "linux-x64": {
             "type": "parameter",
             "datatype": "bool",
             "defaultValue": "false"
