@@ -63,7 +63,7 @@ Options:
 Now create the module:
 
 ```
-dotnet new aziotedgemodulegen -n <ProjectName> -mo <ModuleName> -m CM -wx true -l6 true
+dotnet new aziotedgemodulegen -n <ProjectName> -mo <ModuleName> -m CM -wx true -lx true
 ```
 We support multiple architectures, so users have to specify all the architectures corresponding arguments to true to enable it. windows-x64 is default true.
 
