@@ -2,12 +2,12 @@
 > dotnet template to do scaffolding tool for azure iot edge module development.
 
 This ReadMe consists of two parts:
-- Get Started to introcude how to install the dotnet template nuget package step by step
+- Get Started to introduce how to install the dotnet template nuget package step by step
 - Containerize the module
 
   The dotnet template sets up all necessary files for you to focus on module functionality programming.
 
-  After the coding part completed, following the steps in this part to leverage docker to containerize your module so theat they can be deployed and monitored by the new features of Azure IoT Edge more straight forward.
+  After the coding part completed, following the steps in this part to leverage docker to containerize your module so that they can be deployed and monitored by the new features of Azure IoT Edge more straight forward.
 
 ## Get Started
 
@@ -49,7 +49,7 @@ Find the downloaded nuget package, run dotnet command to install the template wi
 ```
 dotnet new -i <path_to_/dotnet-template-azure-iot-edge-module/CSharp>
 ```
-You could find our template with shortname *aziotedgemodulegen* in the third line from the output:
+You could find our template with short name *aziotedgemodulegen* in the third line from the output:
 
 ```
 Templates                                         Short Name              Language          Tags
@@ -128,8 +128,9 @@ Now create the azure iot edge module by the template with arguments you want:
 dotnet new aziotedgemodulegen -n <ProjectName> -mo <ModuleName> -m CM -wx true -lx true
 ```
 We support multiple architectures, so users have to specify all the architectures corresponding arguments to true to enable it. windows-x64 is default true.
-
 You could refer to above list for argument meaning.
+
+Now all set up files to develop an azure iot edge module are generated.
 
 ## Containerize the module
 
@@ -150,7 +151,7 @@ MAC
 
 https://store.docker.com/editions/community/docker-ce-desktop-mac
 
-Now navigate to the genarated module folder in the first place.
+Now navigate to the generated module folder in the first place.
 
 ### Build your module
 ```
