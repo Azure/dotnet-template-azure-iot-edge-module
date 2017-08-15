@@ -15,11 +15,18 @@ Make sure you have [Nuget](https://www.nuget.org/) installed.
 
 Run following command to add the template nuget source:
 
+- For NeGet V3
+```
+nuget sources add -name AzureIoTEdgeModuleGenerator -source https://www.myget.org/F/dotnet-template-azure-iot-edge-module/api/v3/index.json
+```
+
+- For NuGet V2
+
 ```
 nuget sources add -name AzureIoTEdgeModuleGenerator -source https://www.myget.org/F/dotnet-template-azure-iot-edge-module/api/v2
 ```
 
-Check the nuget source is added successfully and enabled with command **nuget sources**:
+Check the nuget source is added successfully and enabled by executing command **nuget sources**, check the output:
 
 ```
 Registered Sources:
@@ -37,17 +44,43 @@ Install the nuget package:
 nuget install Azure.IoT.Edge.Module.Generator
 ```
 
-run dotnet command to install the template:
+Find the downloaded nuget package, run dotnet command to install the template with real path:
+
 ```
-dotnet new -i <~/dotnet-template-azure-iot-edge-module/CSharp>
+dotnet new -i <path_to_/dotnet-template-azure-iot-edge-module/CSharp>
+```
+You could find our template with shortname *aziotedgemodulegen* in the third line from the output:
+
+```
+Templates                                         Short Name              Language          Tags
+---------------------------------------------------------------------------------------------------------------
+Console Application                               console                 [C#], F#, VB      Common/Console
+Class library                                     classlib                [C#], F#, VB      Common/Library
+Azure IoT Edge Module Generator                   aziotedgemodulegen      [C#]              Console
+Contoso Sample 06                                 sample06                [C#], F#          Console
+Unit Test Project                                 mstest                  [C#], F#, VB      Test/MSTest
+xUnit Test Project                                xunit                   [C#], F#, VB      Test/xUnit
+ASP.NET Core Empty                                web                     [C#]              Web/Empty
+ASP.NET Core Web App (Model-View-Controller)      mvc                     [C#], F#          Web/MVC
+ASP.NET Core Web App (Razor Pages)                razor                   [C#]              Web/MVC/Razor Pages
+ASP.NET Core with Angular                         angular                 [C#]              Web/MVC/SPA
+ASP.NET Core with React.js                        react                   [C#]              Web/MVC/SPA
+ASP.NET Core with React.js and Redux              reactredux              [C#]              Web/MVC/SPA
+ASP.NET Core Web API                              webapi                  [C#]              Web/WebAPI
+Nuget Config                                      nugetconfig                               Config
+Web Config                                        webconfig                                 Config
+Solution File                                     sln                                       Solution
+Razor Page                                        page                                      Web/ASP.NET
+MVC ViewImports                                   viewimports                               Web/ASP.NET
+MVC ViewStart                                     viewstart                                 Web/ASP.NET
 ```
 
-check out all arguments the template may take:
+Check out all arguments the template may take:
 ```
 dotnet net aziotedgemodulegen --help
 ```
 
-A full list as following:
+It will output a full list as following:
 
 ```
 Azure IoT Edge Module Generator (C#)
@@ -89,7 +122,7 @@ Options:
                       Default: false
 ```
 
-Now create the module:
+Now create the azure iot edge module by the template with arguments you want:
 
 ```
 dotnet new aziotedgemodulegen -n <ProjectName> -mo <ModuleName> -m CM -wx true -lx true
