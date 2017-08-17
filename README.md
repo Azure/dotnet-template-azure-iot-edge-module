@@ -15,7 +15,7 @@ Make sure you have [Nuget](https://www.nuget.org/) installed.
 
 Run following command to add the template nuget source:
 
-- For NeGet V3
+- For NuGet V3
 ```
 nuget sources add -name AzureIoTEdgeModuleGenerator -source https://www.myget.org/F/dotnet-template-azure-iot-edge-module/api/v3/index.json
 ```
@@ -76,7 +76,7 @@ MVC ViewStart                                     viewstart                     
 
 Check out all arguments the template may take:
 ```
-dotnet net aziotedgemodulegen --help
+dotnet new aziotedgemodulegen --help
 ```
 
 It will output a full list as following:
