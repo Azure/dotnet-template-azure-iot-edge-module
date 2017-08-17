@@ -153,9 +153,11 @@ https://store.docker.com/editions/community/docker-ce-desktop-mac
 Now navigate to the generated module folder in the first place.
 
 ### Build your module
+
+You could change the output directory to any architecture folder name you want:
 ```
 dotnet build
-dotnet publish -f netcoreapp2
+dotnet publish -f netcoreapp2 -o .\Docker\windows-x64\publish
 ```
 ### Create and run local docker registry
 ```
@@ -163,7 +165,7 @@ docker run -d -p 5000:5000 --name registry resigtry:2
 ```
 ### Build docker image for your module
 ```
-docker build --build-arg EXE_DIR=./bin/Debug/netcoreapp2/publish -t localhost:5000/<lower_case_module_name>:latest <docker_file_directory>
+docker build --build-arg EXE_DIR=./publish -t localhost:5000/<lower_case_module_name>:latest <docker_file_directory>
 ```
 ### Push the image to local registry
 ```
