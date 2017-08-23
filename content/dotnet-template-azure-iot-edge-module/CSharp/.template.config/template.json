@@ -4,13 +4,13 @@
     "name": "Azure IoT Edge Module Generator",
     "identity": "Azure.IoT.Edge.Module.Generator.CSharp",
     "groupIdentity": "Azure.IoT.Edge.Module.Generator",
-    "shortName": "aziotedgemodulegen",
+    "shortName": "aziotedgemodule",
     "tags": {
         "language": "C#",
         "type": "project"
     },
     "preferNameDirectory": "true",
-    "SourceName": "SampleModule",
+    "sourceName": "SampleModule",
     "primaryOutputs": [{
         "path": ""
     }],

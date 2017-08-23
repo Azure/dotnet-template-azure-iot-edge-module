@@ -1,0 +1,15 @@
+{
+    "modules": {
+        "SampleModule": {
+            "name": "SampleModule",
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "config": {
+                "image": "localhost:5000/<lower_case_module_name>",
+                "tag": "latest",
+                "env": {}
+            }
+        }
+    }
+}
