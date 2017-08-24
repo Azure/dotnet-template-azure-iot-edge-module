@@ -196,15 +196,6 @@ Use the edge cli to log into the IoT hub to which your edge device is registered
 edge-explorer login "<IoT Hub connection string for iothubowner policy*>"
 ```
 
-### Build your module
-
-Get back to the directory we just created, you could specify the architecture folder name as you want, build the project:
-
-```
-dotnet build
-dotnet publish -f netcoreapp2 -o .\Docker\Windows-x64\publish
-```
-
 ### Create and run local docker registry
 
 ```
@@ -213,8 +204,13 @@ docker run -d -p 5000:5000 --name registry registry:2
 
 ### Build docker image for your module
 
+Navigate to the module directory we just created, you could build the module in any architecture as you want, let's take windows-x64 for example:
+
 ```
-docker build --build-arg EXE_DIR=./publish -t localhost:5000/<lower_case_module_name>:latest <docker_file_directory>
+dotnet build
+dotnet publish -f netcoreapp2.0 -o .\out\windows-x64\
+copy .\Docker\windows-x64\Dockerfile .\out\windows-x64\
+docker build --build-arg EXE_DIR=. -t localhost:5000/<lower_case_module_name>:latest .\out\windows-x64\
 ```
 
 ### Push the image to local registry

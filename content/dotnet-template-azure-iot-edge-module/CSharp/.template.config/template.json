@@ -84,31 +84,31 @@
             {
                 "condition": "(moduleType =='CM' && windows-x64)",
                 "include": [
-                    "Docker/windows-x64/DockerFile"
+                    "Docker/windows-x64/Dockerfile"
                 ]
             },
             {
                 "condition": "(moduleType =='CM' && windows-x86)",
                 "include": [
-                    "Docker/windows-x86/DockerFile"
+                    "Docker/windows-x86/Dockerfile"
                 ]
             },
             {
                 "condition": "(moduleType =='CM' && linux-x64)",
                 "include": [
-                    "Docker/linux-x64/DockerFile"
+                    "Docker/linux-x64/Dockerfile"
                 ]
             },
             {
                 "condition": "(moduleType =='CM' && linux-x86)",
                 "include": [
-                    "Docker/linux-x86/DockerFile"
+                    "Docker/linux-x86/Dockerfile"
                 ]
             },
             {
                 "condition": "(moduleType =='CM' && arm-x86)",
                 "include": [
-                    "Docker/arm-x86/DockerFile"
+                    "Docker/arm-x86/Dockerfile"
                 ]
             }
         ]
