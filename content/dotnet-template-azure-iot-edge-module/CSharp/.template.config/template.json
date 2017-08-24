@@ -67,7 +67,7 @@
             "datatype": "bool",
             "defaultValue": "false"
         },
-        "arm-x86": {
+        "linux-arm32": {
             "type": "parameter",
             "datatype": "bool",
             "defaultValue": "false"
@@ -106,9 +106,9 @@
                 ]
             },
             {
-                "condition": "(moduleType =='CM' && arm-x86)",
+                "condition": "(moduleType =='CM' && linux-arm32)",
                 "include": [
-                    "Docker/arm-x86/Dockerfile"
+                    "Docker/linux-arm32/Dockerfile"
                 ]
             }
         ]
