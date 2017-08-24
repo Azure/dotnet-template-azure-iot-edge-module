@@ -1,5 +1,6 @@
 language: csharp
 install:
-  - nuget pack Azure.IoT.Edge.Module.Generator.nuspec -NoDefaultExcludes
+  - ls
+  - nuget pack ./Azure.IoT.Edge.Module.Generator.nuspec -NoDefaultExcludes
   - FILENAME = "$(find . -name '*.nupkg')"
   - nuget push "${FILENAME}" env.APIKEY -Source env.PACKAGE_SOURCE
