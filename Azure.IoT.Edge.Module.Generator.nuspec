@@ -12,4 +12,7 @@
     <copyright>Copyright 2016</copyright>
     <tags>azure iot edge dotnet template</tags>
     </metadata>
+    <files>
+      <file src="./content/**/*" />
+    </files>
 </package>
