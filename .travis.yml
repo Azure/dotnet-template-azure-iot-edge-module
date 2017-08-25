@@ -3,3 +3,5 @@ install:
   - nuget pack Azure.IoT.Edge.Module.Generator.nuspec -NoDefaultExcludes
   - FILENAME="$(find . -name '*.nupkg')"
   - nuget push "${FILENAME}" $APIKEY -Source $PACKAGE_SOURCE
+script:
+  - echo "success"
