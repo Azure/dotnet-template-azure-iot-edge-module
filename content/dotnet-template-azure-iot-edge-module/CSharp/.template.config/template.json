@@ -15,30 +15,21 @@
         "path": ""
     }],
     "symbols": {
-        "moduleName": {
-            "type": "parameter",
-            "defaultValue": "SampleModule",
-            "replaces": "SampleModule"
-        },
-        "moduleType": {
+        "target": {
             "type": "parameter",
             "datatype": "choice",
-            "defaultValue": "CM",
+            "defaultValue": "M",
             "choices": [{
-                    "choice": "CM",
-                    "description": "Custom Module"
+                    "choice": "M",
+                    "description": "custom module"
                 },
                 {
-                    "choice": "AF",
-                    "description": "Azure Function"
+                    "choice": "D",
+                    "description": "deployment json file"
                 },
                 {
-                    "choice": "AML",
-                    "description": "Azure Machine Learning"
-                },
-                {
-                    "choice": "ASA",
-                    "description": "Azure Stream Analytics"
+                    "choice": "R",
+                    "description": "routes json file"
                 }
             ]
         },
@@ -74,39 +65,47 @@
         }
     },
     "sources": [{
-        "exclude": ["Docker/**/*", ".template.config/*"],
+        "exclude": ["Docker/**/*", ".template.config/*", "deployment.json", "routes.json"],
         "modifiers": [{
-                "condition": "(moduleType !='CM')",
+                "condition": "(target == 'D')",
+                "include": ["deployment.json"]
+            },
+            {
+                "condition": "(target == 'R')",
+                "include": ["routes.json"]
+            },
+            {
+                "condition": "(target !='M')",
                 "exclude": [
                     "Program.cs", "SampleModule.csproj"
                 ]
             },
             {
-                "condition": "(moduleType =='CM' && windows-x64)",
+                "condition": "(target =='M' && windows-x64)",
                 "include": [
                     "Docker/windows-x64/Dockerfile"
                 ]
             },
             {
-                "condition": "(moduleType =='CM' && windows-x86)",
+                "condition": "(target =='M' && windows-x86)",
                 "include": [
                     "Docker/windows-x86/Dockerfile"
                 ]
             },
             {
-                "condition": "(moduleType =='CM' && linux-x64)",
+                "condition": "(target =='M' && linux-x64)",
                 "include": [
                     "Docker/linux-x64/Dockerfile"
                 ]
             },
             {
-                "condition": "(moduleType =='CM' && linux-x86)",
+                "condition": "(target =='M' && linux-x86)",
                 "include": [
                     "Docker/linux-x86/Dockerfile"
                 ]
             },
             {
-                "condition": "(moduleType =='CM' && linux-arm32)",
+                "condition": "(target =='M' && linux-arm32)",
                 "include": [
                     "Docker/linux-arm32/Dockerfile"
                 ]
@@ -114,40 +113,12 @@
         ]
     }],
     "postActions": [{
-            "condition": "(!skipRestore && moduleType == 'CM')",
-            "description": "Restore NuGet packages required by this project.",
-            "manualInstructions": [{
-                "text": "Run 'dotnet restore'"
-            }],
-            "actionId": "210D431B-A78B-4D2F-B762-4ED3E3EA9025",
-            "continueOnError": true
-        },
-        {
-            "condition": "(moduleType == 'AF')",
-            "description": "Open azure function module url in browser",
-            "manualInstructions": [{
-                "text": "Run 'start https://www.github.com/summersun'"
-            }],
-            "actionId": "FEA7469E-E2E7-4431-B86B-27EBC1744883",
-            "continueOnError": true
-        },
-        {
-            "condition": "(moduleType == 'AML')",
-            "description": "Open azure machine learning module url in browser",
-            "manualInstructions": [{
-                "text": "Run 'start https://www.github.com/summersun'"
-            }],
-            "actionId": "FEA7469E-E2E7-4431-B86B-27EBC1744883",
-            "continueOnError": true
-        },
-        {
-            "condition": "(moduleType == 'ASA')",
-            "description": "Open azure stream analytics module url in browser",
-            "manualInstructions": [{
-                "text": "Run 'start https://www.github.com/summersun'"
-            }],
-            "actionId": "FEA7469E-E2E7-4431-B86B-27EBC1744883",
-            "continueOnError": true
-        }
-    ]
+        "condition": "(!skipRestore && target == 'M')",
+        "description": "Restore NuGet packages required by this project.",
+        "manualInstructions": [{
+            "text": "Run 'dotnet restore'"
+        }],
+        "actionId": "210D431B-A78B-4D2F-B762-4ED3E3EA9025",
+        "continueOnError": true
+    }]
 }

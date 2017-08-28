@@ -82,19 +82,28 @@ dotnet new aziotedgemodule --help
 It will output a full list as following:
 
 ```
+Usage: new [options]
+
+Options:
+  -h, --help          Displays help for this command.
+  -l, --list          Lists templates containing the specified name. If no name is specified, lists all templates.
+  -n, --name          The name for the output being created. If no name is specified, the name of the current directory is used.
+  -o, --output        Location to place the generated output.
+  -i, --install       Installs a source or a template pack.
+  -u, --uninstall     Uninstalls a source or a template pack.
+  --type              Filters templates based on available types. Predefined values are "project", "item" or "other".
+  --force             Forces content to be generated even if it would change existing files.
+  -lang, --language   Specifies the language of the template to create.
+
+
 Azure IoT Edge Module Generator (C#)
 Author: Summer Sun
 Options:
-  -mo|--moduleName
-                      string - Optional
-                      Default: SampleModule
-
-  -m|--moduleType
-                          CM     - Custom Module
-                          AF     - Azure Function
-                          AML    - Azure Machine Learning
-                          ASA    - Azure Stream Analytics
-                      Default: CM
+  -t|--target
+                          M    - custom module
+                          D    - deployment json file
+                          R    - routes json file
+                      Default: M
 
   -s|--skipRestore
                       bool - Optional
@@ -116,16 +125,31 @@ Options:
                       bool - Optional
                       Default: false
 
-  -ax|--arm-x86
+  -la|--linux-arm32
                       bool - Optional
                       Default: false
+
 ```
 
 Now create the azure iot edge module by the template with arguments you want:
 
 ```
-dotnet new aziotedgemodule -n <ProjectName> -mo <ModuleName> -m CM -wx true -lx true
+dotnet new aziotedgemodule -n <ModuleName> -t M -wx true -lx true
 ```
+
+If you just want, or to add the deployment.json file for your solution, navigate to your solution folder:
+```
+dotnet new aziotedgemodule -n <ModuleName> -t D -o ./
+```
+
+If you want just the routes.json file for your solution, navigate to your solution folder:
+```
+dotnet new aziotedgemodule -n <ModuleName> -t R -o ./
+```
+
+<ModuleName> is optional if you need only deployment.json or routes.json file.
+BUt if you don't specify it, then you will need to update deployment.json manually.
+
 We support multiple architectures, so users have to specify all the architectures corresponding arguments to true to enable it. windows-x64 is default true.
 You could refer to above list for argument meaning.
 
