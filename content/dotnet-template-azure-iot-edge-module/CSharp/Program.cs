@@ -1,85 +1,161 @@
+
 namespace SampleModule
 {
     using System;
-    using System.IO;
+    using System.Collections.Generic;
     using System.Runtime.Loader;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.Azure.Devices.Client;
     using Microsoft.Azure.Devices.Client.Transport.Mqtt;
-    using Microsoft.Extensions.Configuration;
+    using Microsoft.Azure.Devices.Shared;
     using Newtonsoft.Json;
 
     class Program
     {
-        static readonly Random Rnd = new Random();
+        const string TemperatureThresholdKey = "TemperatureThreshold";
+        const int DefaultTemperatureThreshold = 25;
+        static int counter;
 
-        public static int Main() => MainAsync().Result;
-
-        static async Task<int> MainAsync()
+        static void Main(string[] args)
         {
-            IConfiguration configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("config/appsettings.json", optional: true)
-                .AddEnvironmentVariables()
-                .Build();
+            // The Edge runtime gives us the connection string we need -- it is injected as an environment variable
+            string connectionString =
+                Environment.GetEnvironmentVariable("EdgeHubConnectionString");
+            Init(connectionString).Wait();
 
-            string connectionString = configuration.GetValue<string>("EdgeHubConnectionString");
-            var messageDelay = configuration.GetValue<TimeSpan>("MessageDelay", TimeSpan.FromSeconds(5));
-            var minTemp = configuration.GetValue<int>("MinTemp", -10);
-            var maxTemp = configuration.GetValue<int>("MaxTemp", 40);
-
-            var mqttSetting = new MqttTransportSettings(TransportType.Mqtt_Tcp_Only)
-            {
-                // TODO: Remove this when we figure out how to trust the Edge Hub's root CA in modules.
-                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
-            };
-            ITransportSettings[] settings = { mqttSetting };
-
-            DeviceClient deviceClient = DeviceClient.CreateFromConnectionString(connectionString, settings);
-            await deviceClient.OpenAsync();
-
+            // Wait until the app unloads or is cancelled
             var cts = new CancellationTokenSource();
-            void OnUnload(AssemblyLoadContext ctx) => CancelProgram(cts);
-            AssemblyLoadContext.Default.Unloading += OnUnload;
-            Console.CancelKeyPress += (sender, cpe) => { CancelProgram(cts); };
-
-            await SendEvent(deviceClient, messageDelay, minTemp, maxTemp, cts);
-            return 0;
+            AssemblyLoadContext.Default.Unloading += (ctx) => cts.Cancel();
+            Console.CancelKeyPress += (sender, cpe) => cts.Cancel();
+            WhenCancelled(cts.Token).Wait();
         }
 
-        static async Task SendEvent(
-            DeviceClient deviceClient,
-            TimeSpan messageDelay,
-            int minTemp,
-            int maxTemp,
-            CancellationTokenSource cts)
+        public static Task WhenCancelled(CancellationToken cancellationToken)
         {
-            int count = 1;
-            while (!cts.Token.IsCancellationRequested)
+            var tcs = new TaskCompletionSource<bool>();
+            cancellationToken.Register(s => ((TaskCompletionSource<bool>)s).SetResult(true), tcs);
+            return tcs.Task;
+        }
+
+        /// <summary>
+        /// Initializes the DeviceClient and sets up the callback to receive 
+        /// messages containing temperature information
+        /// </summary>
+        static async Task Init(string connectionString)
+        {
+            // Use Mqtt transport settings. 
+            // The RemoteCertificateValidationCallback needs to be set
+            // since the Edge Hub currently uses a self signed SSL certificate.
+            ITransportSettings[] settings =
             {
-                var tempData = new MessageBody
+                new MqttTransportSettings(TransportType.Mqtt_Tcp_Only)
+                { RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true }
+            };
+
+            // Open a connection to the Edge runtime
+            DeviceClient deviceClient =
+                DeviceClient.CreateFromConnectionString(connectionString, settings);
+            await deviceClient.OpenAsync();
+            Console.WriteLine("SampleModule - Opened module client connection");
+
+            ModuleConfig moduleConfig = await GetConfiguration(deviceClient);
+            Console.WriteLine($"Using TemperatureThreshold value of {moduleConfig.TemperatureThreshold}");
+
+            var userContext = new Tuple<DeviceClient, ModuleConfig>(deviceClient, moduleConfig);
+
+            // Register callback to be called when a message is sent to "input1"
+            await deviceClient.SetEventHandlerAsync(
+                "input1",
+                PrintAndFilterMessages,
+                userContext);
+        }
+
+        /// <summary>
+        /// This method is called whenever the Filter module is sent a message from the EdgeHub. 
+        /// It filters the messages based on the temperature value in the body of the messages, 
+        /// and the temperature threshold set via config.
+        /// It prints all the incoming messages.
+        /// </summary>
+        static async Task PrintAndFilterMessages(Message message, object userContext)
+        {
+            int counterValue = Interlocked.Increment(ref counter);
+
+            var userContextValues = userContext as Tuple<DeviceClient, ModuleConfig>;
+            if (userContextValues == null)
+            {
+                throw new InvalidOperationException("UserContext doesn't contain " +
+                    "expected values");
+            }
+            DeviceClient deviceClient = userContextValues.Item1;
+            ModuleConfig moduleModuleConfig = userContextValues.Item2;
+
+            byte[] messageBytes = message.GetBytes();
+            string messageString = Encoding.UTF8.GetString(messageBytes);
+            Console.WriteLine($"Received message: {counterValue}, Body: [{messageString}]");
+
+            // Get message body, containing the Temperature data
+            var messageBody = JsonConvert.DeserializeObject<MessageBody>(messageString);
+
+            if (messageBody != null
+                && messageBody.Temperature > moduleModuleConfig.TemperatureThreshold)
+            {
+                Console.WriteLine($"Temperature {messageBody.Temperature} " +
+                    $"exceeds threshold {moduleModuleConfig.TemperatureThreshold}");
+                var filteredMessage = new Message(messageBytes);
+                foreach (KeyValuePair<string, string> prop in message.Properties)
                 {
-                    Temperature = Rnd.Next(minTemp, maxTemp)
-                };
+                    filteredMessage.Properties.Add(prop.Key, prop.Value);
+                }
 
-                string dataBuffer = JsonConvert.SerializeObject(tempData);
-                var eventMessage = new Message(Encoding.UTF8.GetBytes(dataBuffer));
-                Console.WriteLine($"\t{DateTime.Now.ToLocalTime()}> Sending message: {count}, Body: [{dataBuffer}]");
-
-                await deviceClient.SendEventAsync("temperatureOutput", eventMessage);
-                await Task.Delay(messageDelay, cts.Token);
-                count++;
+                filteredMessage.Properties.Add("MessageType", "Alert");
+                await deviceClient.SendEventAsync("alertOutput", filteredMessage);
             }
         }
 
-        static void CancelProgram(CancellationTokenSource cts)
+        /// <summary>
+        /// Get the configuration for the module (in this case the threshold temperature)s. 
+        /// </summary>
+        static async Task<ModuleConfig> GetConfiguration(DeviceClient deviceClient)
         {
-            Console.WriteLine("Termination requested, closing.");
-            cts.Cancel();
+            // First try to get the config from the Module twin
+            Twin twin = await deviceClient.GetTwinAsync();
+            if (twin.Properties.Desired.Contains(TemperatureThresholdKey))
+            {
+                int tempThreshold = (int)twin.Properties.Desired[TemperatureThresholdKey];
+                return new ModuleConfig(tempThreshold);
+            }
+            // Else try to get it from the environment variables.
+            else
+            {
+                string tempThresholdEnvVar = Environment.GetEnvironmentVariable(TemperatureThresholdKey);
+                if (!string.IsNullOrWhiteSpace(tempThresholdEnvVar) && int.TryParse(tempThresholdEnvVar, out int tempThreshold))
+                {
+                    return new ModuleConfig(tempThreshold);
+                }
+            }
+
+            // If config wasn't set in either Twin or Environment variables, use default.
+            return new ModuleConfig(DefaultTemperatureThreshold);
         }
 
+        /// <summary>
+        /// This class contains the configuration for this module. In this case, it is just the temperature threshold.
+        /// </summary>
+        class ModuleConfig
+        {
+            public ModuleConfig(int temperatureThreshold)
+            {
+                this.TemperatureThreshold = temperatureThreshold;
+            }
+
+            public int TemperatureThreshold { get; }
+        }
+
+        /// <summary>
+        /// The class containing the expected schema for the body of the incoming message.
+        /// </summary>
         class MessageBody
         {
             public int Temperature { get; set; }
