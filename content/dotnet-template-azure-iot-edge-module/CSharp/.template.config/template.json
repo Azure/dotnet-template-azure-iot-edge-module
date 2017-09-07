@@ -18,8 +18,13 @@
         "target": {
             "type": "parameter",
             "datatype": "choice",
-            "defaultValue": "M",
-            "choices": [{
+            "defaultValue": "A",
+            "choices": [
+                {
+                    "choice": "A",
+                    "description": "custom module and all required files"
+                },
+                {
                     "choice": "M",
                     "description": "custom module"
                 },
@@ -38,82 +43,38 @@
             "datatype": "bool",
             "defaultValue": "false"
         },
-        "windows-x64": {
-            "type": "parameter",
-            "datatype": "bool",
-            "defaultValue": "true"
-        },
-        "windows-x86": {
-            "type": "parameter",
-            "datatype": "bool",
-            "defaultValue": "false"
-        },
         "linux-x64": {
             "type": "parameter",
             "datatype": "bool",
-            "defaultValue": "false"
-        },
-        "linux-x86": {
-            "type": "parameter",
-            "datatype": "bool",
-            "defaultValue": "false"
-        },
-        "linux-arm32": {
-            "type": "parameter",
-            "datatype": "bool",
-            "defaultValue": "false"
+            "defaultValue": "true"
         }
     },
     "sources": [{
         "exclude": ["Docker/**/*", ".template.config/*", "deployment.json", "routes.json"],
         "modifiers": [{
-                "condition": "(target == 'D')",
+                "condition": "(target == 'A' || target == 'D')",
                 "include": ["deployment.json"]
             },
             {
-                "condition": "(target == 'R')",
+                "condition": "(target == 'A' || target == 'R')",
                 "include": ["routes.json"]
             },
             {
-                "condition": "(target !='M')",
+                "condition": "(target !='A' && target != 'M')",
                 "exclude": [
                     "Program.cs", "SampleModule.csproj"
                 ]
             },
             {
-                "condition": "(target =='M' && windows-x64)",
-                "include": [
-                    "Docker/windows-x64/Dockerfile"
-                ]
-            },
-            {
-                "condition": "(target =='M' && windows-x86)",
-                "include": [
-                    "Docker/windows-x86/Dockerfile"
-                ]
-            },
-            {
-                "condition": "(target =='M' && linux-x64)",
+                "condition": "((target == 'A' || target =='M') && linux-x64)",
                 "include": [
                     "Docker/linux-x64/Dockerfile"
-                ]
-            },
-            {
-                "condition": "(target =='M' && linux-x86)",
-                "include": [
-                    "Docker/linux-x86/Dockerfile"
-                ]
-            },
-            {
-                "condition": "(target =='M' && linux-arm32)",
-                "include": [
-                    "Docker/linux-arm32/Dockerfile"
                 ]
             }
         ]
     }],
     "postActions": [{
-        "condition": "(!skipRestore && target == 'M')",
+        "condition": "(!skipRestore && (target == 'M' || target == 'A'))",
         "description": "Restore NuGet packages required by this project.",
         "manualInstructions": [{
             "text": "Run 'dotnet restore'"

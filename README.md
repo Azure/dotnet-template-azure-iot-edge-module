@@ -82,6 +82,7 @@ dotnet new aziotedgemodule --help
 It will output a full list as following:
 
 ```
+PS D:\CODE\dotnet-template-azure-iot-edge-module> dotnet new aziotedgemodule --help
 Usage: new [options]
 
 Options:
@@ -100,66 +101,58 @@ Azure IoT Edge Module Generator (C#)
 Author: Summer Sun
 Options:
   -t|--target
-                          M    - custom module
-                          D    - deployment json file
-                          R    - routes json file
-                      Default: M
+                        A    - custom module and all required files
+                        M    - custom module
+                        D    - deployment json file
+                        R    - routes json file
+                    Default: A
 
   -s|--skipRestore
-                      bool - Optional
-                      Default: false
-
-  -wx|--windows-x64
-                      bool - Optional
-                      Default: true
-
-  -wix|--windows-x86
-                      bool - Optional
-                      Default: false
+                    bool - Optional
+                    Default: false
 
   -lx|--linux-x64
-                      bool - Optional
-                      Default: false
-
-  -lix|--linux-x86
-                      bool - Optional
-                      Default: false
-
-  -la|--linux-arm32
-                      bool - Optional
-                      Default: false
+                    bool - Optional
+                    Default: true
 
 ```
 
 Now create the azure iot edge module by the template with arguments you want:
 
+In default, the template will create all including custom module files, deployment file and routes file:
+
 ```
-dotnet new aziotedgemodule -n <ModuleName> -t M -wx true -lx true
+dotnet new aziotedgemodule -n <ModuleName>
 ```
 
-If you just want, or to add the deployment.json file for your solution, navigate to your solution folder:
+If you just want a custom module, specify it in -t argument:
+
 ```
-dotnet new aziotedgemodule -n <ModuleName> -t D -o ./
+dotnet new aziotedgemodule -n <ModuleName> -t M
 ```
 
-If you want just the routes.json file for your solution, navigate to your solution folder:
+Then it will just create a custom module, without deployment or routes related files.
+
+If you want to add the deployment.json file for your solution, set the target type to **-t D** and specify the module directory in **-o** parameter:
 ```
-dotnet new aziotedgemodule -n <ModuleName> -t R -o ./
+dotnet new aziotedgemodule -n <ModuleName> -t D -o ./<ModuleName>
+```
+
+If you want to add the routes.json file for your solution, set the target type to **-t R** and specify the module directory in **-o** parameter:
+```
+dotnet new aziotedgemodule -n <ModuleName> -t R -o ./<ModuleName>
 ```
 
 <ModuleName> is optional if you need only deployment.json or routes.json file.
-BUt if you don't specify it, then you will need to update deployment.json manually.
+But if you don't specify it, then you will need to update deployment.json manually.
 
-We support multiple architectures, so users have to specify all the architectures corresponding arguments to true to enable it. windows-x64 is default true.
-You could refer to above list for argument meaning.
-
-Now all set up files to develop an azure iot edge module are generated.
+We support multiple architectures, but currently only linux-x64 is ready. So it is set the default.
 
 ## Deploy and run the module
 
 azure-iot-edge-module sets up the Azure IoT Edge Module development environment, generating all necessary files for you.
 
-To make the module executable, there are several steps to do.
+To run the module in docker container, there are several steps to do.
 
 ### Install docker
 Ubuntu
@@ -206,7 +199,7 @@ npm install -g edge-explorer@latest --registry http://edgenpm.southcentralus.clo
 npm install -g launch-edge-runtime@latest --registry http://edgenpm.southcentralus.cloudapp.azure.com/
 ```
 
-### Launch edge runtime and 
+### Launch edge runtime and login edge-explorer
 
 Make sure you’re using a device connection string and not IoT Hub connection string if you get the error, “Connection string does not have a DeviceId element. Please supply a *device* connection string and not an Azure IoT Hub connection string.”
 
@@ -226,15 +219,15 @@ edge-explorer login "<IoT Hub connection string for iothubowner policy*>"
 docker run -d -p 5000:5000 --name registry registry:2
 ```
 
-### Build docker image for your module
+### Build your module
 
-Navigate to the module directory we just created, you could build the module in any architecture as you want, let's take windows-x64 for example:
+Navigate to the module directory we just created, you could build the module in any architecture as you want, let's take linux-x64 for example:
 
 ```
 dotnet build
-dotnet publish -f netcoreapp2.0 -o .\out\windows-x64\
-copy .\Docker\windows-x64\Dockerfile .\out\windows-x64\
-docker build --build-arg EXE_DIR=. -t localhost:5000/<lower_case_module_name>:latest .\out\windows-x64\
+dotnet publish -f netcoreapp2.0 -o .\out\linux-x64\
+copy .\Docker\linux-x64\Dockerfile .\out\linux-x64\
+docker build --build-arg EXE_DIR=. -t localhost:5000/<name_your_module>:latest .\out\linux-x64\
 ```
 
 ### Push the image to local registry
@@ -245,9 +238,10 @@ docker push localhost:5000/<lower_case_module_name>
 
 ### Deploy the module
 
-Deployment is accomplished using the edge cli tool. This tool uses Azure IoT Hub to send deployment information to the edge device.
+Deployment is accomplished using the edge-explorer command line.
 
-Update the deployment.json with lower case of your module name localhost:5000/<lower_case_module_name> before you run the following command:
+Update the deployment.json with lower case of your module name localhost:5000/<lower_case_module_name> 
+before you run the following command:
 
 ```
 edge-explorer edge deployment create -m <path to deployment file> -d <edge device ID>
