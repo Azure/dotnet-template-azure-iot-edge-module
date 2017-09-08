@@ -50,7 +50,7 @@
         }
     },
     "sources": [{
-        "exclude": ["Docker/**/*", ".template.config/*", "deployment.json", "routes.json"],
+        "exclude": ["Docker/**/*", ".template.config/*", "deployment.json", "routes.json", "bin/**/*", "obj/**/*"],
         "modifiers": [{
                 "condition": "(target == 'A' || target == 'D')",
                 "include": ["deployment.json"]
