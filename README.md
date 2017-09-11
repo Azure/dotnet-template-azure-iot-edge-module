@@ -133,18 +133,17 @@ dotnet new aziotedgemodule -n <ModuleName> -t M
 
 Then it will just create a custom module, without deployment or routes related files.
 
-If you want to add the deployment.json file for your solution, set the target type to **-t D** and specify the module directory in **-o** parameter:
+If you want to add the deployment.json file for your solution/module, navigate to solution/module directory, set the target type to **-t D**:
 ```
-dotnet new aziotedgemodule -n <ModuleName> -t D -o ./<ModuleName>
-```
-
-If you want to add the routes.json file for your solution, set the target type to **-t R** and specify the module directory in **-o** parameter:
-```
-dotnet new aziotedgemodule -n <ModuleName> -t R -o ./<ModuleName>
+dotnet new aziotedgemodule -t D
 ```
 
-<ModuleName> is optional if you need only deployment.json or routes.json file.
-But if you don't specify it, then you will need to update deployment.json manually.
+If you want to add the routes.json file for your solution/module, navigate to solution/module directory, set the target type to **-t R**:
+```
+dotnet new aziotedgemodule -t R
+```
+
+Update deployment.json manually to set module name and image name.
 
 We support multiple architectures, but currently only linux-x64 is ready. So it is set the default.
 
