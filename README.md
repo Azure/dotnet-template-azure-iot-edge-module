@@ -46,7 +46,7 @@ nuget install Azure.IoT.Edge.Module.Generator
 You will get a new folder with name *Azure.IoT.Edge.Module.Generator.0.0.1*, check out the content in this folder, run dotnet command to install the template with correct path:
 
 ```
-dotnet new -i <.\Azure.IoT.Edge.Module.Generator.0.0.1\content\dotnet-template-azure-iot-edge-module\CSharp\>
+dotnet new -i <.\Azure.IoT.Edge.Module.Generator.0.0.1\dotnet-template-azure-iot-edge-module\CSharp\>
 ```
 You could find our template with short name *aziotedgemodule* in the output:
 
