@@ -62,7 +62,7 @@
             {
                 "condition": "(target !='A' && target != 'M')",
                 "exclude": [
-                    "Program.cs", "SampleModule.csproj"
+                    "Program.cs", "SampleModule.csproj", ".gitignore"
                 ]
             },
             {
