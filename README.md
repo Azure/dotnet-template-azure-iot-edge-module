@@ -17,13 +17,13 @@ Run following command to add the template nuget source:
 
 - For NuGet V3
 ```
-nuget sources add -name AzureIoTEdgeModuleGenerator -source https://www.myget.org/F/dotnet-template-azure-iot-edge-module/api/v3/index.json
+nuget sources add -name AzureIoTEdgeModule -source https://www.myget.org/F/dotnet-template-azure-iot-edge-module/api/v3/index.json
 ```
 
 - For NuGet V2
 
 ```
-nuget sources add -name AzureIoTEdgeModuleGenerator -source https://www.myget.org/F/dotnet-template-azure-iot-edge-module/api/v2
+nuget sources add -name AzureIoTEdgeModule -source https://www.myget.org/F/dotnet-template-azure-iot-edge-module/api/v2
 ```
 
 Check the nuget source is added successfully and enabled by executing command **nuget sources**, check the output:
@@ -35,18 +35,18 @@ Registered Sources:
       https://api.nuget.org/v3/index.json
   2.  https://www.nuget.org/api/v2/ [Disabled]
       https://www.nuget.org/api/v2/
-  3.  AzureIoTEdgeModuleGenerator [Enabled]
+  3.  AzureIoTEdgeModule [Enabled]
       https://www.myget.org/F/dotnet-template-azure-iot-edge-module/api/v2
 ```
 
 Install the nuget package:
 ```
-nuget install Azure.IoT.Edge.Module.Generator
+nuget install Azure.IoT.Edge.Module
 ```
-You will get a new folder with name *Azure.IoT.Edge.Module.Generator.0.0.1*, check out the content in this folder, run dotnet command to install the template with correct path:
+You will get a new folder with name *Azure.IoT.Edge.Module.0.0.1*, check out the content in this folder, run dotnet command to install the template with correct path:
 
 ```
-dotnet new -i <.\Azure.IoT.Edge.Module.Generator.0.0.1\dotnet-template-azure-iot-edge-module\CSharp\>
+dotnet new -i <.\Azure.IoT.Edge.Module.0.0.1\dotnet-template-azure-iot-edge-module\CSharp\>
 ```
 You could find our template with short name *aziotedgemodule* in the output:
 
@@ -55,7 +55,7 @@ Templates                                         Short Name              Langua
 ---------------------------------------------------------------------------------------------------------------
 Console Application                               console                 [C#], F#, VB      Common/Console
 Class library                                     classlib                [C#], F#, VB      Common/Library
-Azure IoT Edge Module Generator                   aziotedgemodule         [C#]              Console
+Azure IoT Edge Module                             aziotedgemodule         [C#]              Console
 Contoso Sample 06                                 sample06                [C#], F#          Console
 Unit Test Project                                 mstest                  [C#], F#, VB      Test/MSTest
 xUnit Test Project                                xunit                   [C#], F#, VB      Test/xUnit
@@ -97,7 +97,7 @@ Options:
   -lang, --language   Specifies the language of the template to create.
 
 
-Azure IoT Edge Module Generator (C#)
+Azure IoT Edge Module (C#)
 Author: Summer Sun
 Options:
   -t|--target

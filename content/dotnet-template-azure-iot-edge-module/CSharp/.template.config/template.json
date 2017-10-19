@@ -1,9 +1,9 @@
 {
     "author": "Summer Sun",
     "classifications": ["Console"],
-    "name": "Azure IoT Edge Module Generator",
-    "identity": "Azure.IoT.Edge.Module.Generator.CSharp",
-    "groupIdentity": "Azure.IoT.Edge.Module.Generator",
+    "name": "Azure IoT Edge Module",
+    "identity": "Azure.IoT.Edge.Module.CSharp",
+    "groupIdentity": "Azure.IoT.Edge.Module",
     "shortName": "aziotedgemodule",
     "tags": {
         "language": "C#",
