@@ -237,19 +237,4 @@ docker push localhost:5000/<lower_case_module_name>
 
 ### Deploy the module
 
-Deployment is accomplished using the edge-explorer command line.
-
-Update the deployment.json with lower case of your module name localhost:5000/<lower_case_module_name> 
-before you run the following command:
-
-```
-edge-explorer edge deployment create -m <path to deployment file> -d <edge device ID>
-```
-
-Now we have the sample module deployed and running, you could monitor it with command 
-
-```
-edge-explorer monitor events <deviceID> --login <iothub connection string not device connection string>
-```
-
-There will be regular and continuing temperature message show in the console. If not, go back check if each step accomplished correctly.
+TBD
