@@ -10,34 +10,10 @@
         "type": "project"
     },
     "preferNameDirectory": "true",
-    "sourceName": "SampleModule",
     "primaryOutputs": [{
         "path": ""
     }],
     "symbols": {
-        "target": {
-            "type": "parameter",
-            "datatype": "choice",
-            "defaultValue": "A",
-            "choices": [
-                {
-                    "choice": "A",
-                    "description": "custom module and all required files"
-                },
-                {
-                    "choice": "M",
-                    "description": "custom module"
-                },
-                {
-                    "choice": "D",
-                    "description": "deployment json file"
-                },
-                {
-                    "choice": "R",
-                    "description": "routes json file"
-                }
-            ]
-        },
         "skipRestore": {
             "type": "parameter",
             "datatype": "bool",
@@ -50,31 +26,10 @@
         }
     },
     "sources": [{
-        "exclude": ["Docker/**/*", ".template.config/*", "deployment.json", "routes.json", "bin/**/*", "obj/**/*"],
-        "modifiers": [{
-                "condition": "(target == 'A' || target == 'D')",
-                "include": ["deployment.json"]
-            },
-            {
-                "condition": "(target == 'A' || target == 'R')",
-                "include": ["routes.json"]
-            },
-            {
-                "condition": "(target !='A' && target != 'M')",
-                "exclude": [
-                    "Program.cs", "SampleModule.csproj", ".gitignore"
-                ]
-            },
-            {
-                "condition": "((target == 'A' || target =='M') && linux-x64)",
-                "include": [
-                    "Docker/linux-x64/Dockerfile"
-                ]
-            }
-        ]
+        "exclude": [".template.config/*", "bin/**/*", "obj/**/*"]
     }],
     "postActions": [{
-        "condition": "(!skipRestore && (target == 'M' || target == 'A'))",
+        "condition": "(!skipRestore)",
         "description": "Restore NuGet packages required by this project.",
         "manualInstructions": [{
             "text": "Run 'dotnet restore -s https://www.myget.org/F/aziot-device-sdk/api/v3/index.json'"

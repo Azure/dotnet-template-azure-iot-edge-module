@@ -33,7 +33,7 @@ Registered Sources:
 
   1.  nuget.org [Enabled]
       https://api.nuget.org/v3/index.json
-  2.  https://www.nuget.org/api/v2/ [Disabled]
+  2.  https://www.nuget.org/api/v2/ [Enabled]
       https://www.nuget.org/api/v2/
   3.  AzureIoTEdgeModule [Enabled]
       https://www.myget.org/F/dotnet-template-azure-iot-edge-module/api/v2
@@ -82,13 +82,14 @@ dotnet new aziotedgemodule --help
 It will output a full list as following:
 
 ```
-PS D:\CODE\dotnet-template-azure-iot-edge-module> dotnet new aziotedgemodule --help
+PS C:\Users\qisun\Desktop> dotnet new aziotedgemodule --help
 Usage: new [options]
 
 Options:
   -h, --help          Displays help for this command.
   -l, --list          Lists templates containing the specified name. If no name is specified, lists all templates.
-  -n, --name          The name for the output being created. If no name is specified, the name of the current directory is used.
+  -n, --name          The name for the output being created. If no name is specified, the name of the current directory
+is used.
   -o, --output        Location to place the generated output.
   -i, --install       Installs a source or a template pack.
   -u, --uninstall     Uninstalls a source or a template pack.
@@ -100,13 +101,6 @@ Options:
 Azure IoT Edge Module (C#)
 Author: Summer Sun
 Options:
-  -t|--target
-                        A    - custom module and all required files
-                        M    - custom module
-                        D    - deployment json file
-                        R    - routes json file
-                    Default: A
-
   -s|--skipRestore
                     bool - Optional
                     Default: false
@@ -114,36 +108,13 @@ Options:
   -lx|--linux-x64
                     bool - Optional
                     Default: true
-
 ```
 
 Now create the azure iot edge module by the template with arguments you want:
 
-In default, the template will create all including custom module files, deployment file and routes file:
-
 ```
 dotnet new aziotedgemodule -n <ModuleName>
 ```
-
-If you just want a custom module, specify it in -t argument:
-
-```
-dotnet new aziotedgemodule -n <ModuleName> -t M
-```
-
-Then it will just create a custom module, without deployment or routes related files.
-
-If you want to add the deployment.json file for your solution/module, navigate to solution/module directory, set the target type to **-t D**:
-```
-dotnet new aziotedgemodule -t D
-```
-
-If you want to add the routes.json file for your solution/module, navigate to solution/module directory, set the target type to **-t R**:
-```
-dotnet new aziotedgemodule -t R
-```
-
-Update deployment.json manually to set module name and image name.
 
 We support multiple architectures, but currently only linux-x64 is ready. So it is set the default.
 

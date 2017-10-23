@@ -1,4 +1,4 @@
-namespace  <%= ModuleName %>
+namespace SampleModule
 {
     using System;
     using System.Collections.Generic;
@@ -55,16 +55,8 @@ namespace  <%= ModuleName %>
                 await IoTHubModuleClient.OpenAsync();
                 Console.WriteLine("IoT Hub module client initialized.");
 
-                // Attach callback for Twin desired properties updates
-                await IoTHubModuleClient.SetDesiredPropertyUpdateCallbackAsync(onDesiredPropertiesUpdate, null);
-
-                // Code snippet 3
                 // Register callback to be called when a message is sent to "input1"
-                await IoTHubModuleClient.SetEventHandlerAsync(
-                    "input1",
-                    FilterMessages,
-                    IoTHubModuleClient);
-                // \code snippet
+                await IoTHubModuleClient.SetEventHandlerAsync("input1", PipeMessage, IoTHubModuleClient);
             }
             catch (AggregateException ex)
             {
