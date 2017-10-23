@@ -11,44 +11,25 @@ This ReadMe consists of two parts:
 
 ## Get Started
 
-Make sure you have [Nuget](https://www.nuget.org/) installed.
-
-Run following command to add the template nuget source:
+Make sure you have [Nuget](https://www.nuget.org/) installed and better add it to environment variables so that you could just type *nuget* in command line to use it.
 
 - For NuGet V3
 ```
-nuget sources add -name AzureIoTEdgeModule -source https://www.myget.org/F/dotnet-template-azure-iot-edge-module/api/v3/index.json
+nuget install Azure.IoT.Edge.Module -source https://www.myget.org/F/dotnet-template-azure-iot-edge-module/api/v3/index.json
 ```
 
 - For NuGet V2
 
 ```
-nuget sources add -name AzureIoTEdgeModule -source https://www.myget.org/F/dotnet-template-azure-iot-edge-module/api/v2
+nuget install Azure.IoT.Edge.Module -source https://www.myget.org/F/dotnet-template-azure-iot-edge-module/api/v2
 ```
 
-Check the nuget source is added successfully and enabled by executing command **nuget sources**, check the output:
-
-```
-Registered Sources:
-
-  1.  nuget.org [Enabled]
-      https://api.nuget.org/v3/index.json
-  2.  https://www.nuget.org/api/v2/ [Enabled]
-      https://www.nuget.org/api/v2/
-  3.  AzureIoTEdgeModule [Enabled]
-      https://www.myget.org/F/dotnet-template-azure-iot-edge-module/api/v2
-```
-
-Install the nuget package:
-```
-nuget install Azure.IoT.Edge.Module
-```
-You will get a new folder with name *Azure.IoT.Edge.Module.0.0.1*, check out the content in this folder, run dotnet command to install the template with correct path:
+You will get a new folder with name *Azure.IoT.Edge.Module.* along with version, run dotnet command to install the template with correct path:
 
 ```
 dotnet new -i <.\Azure.IoT.Edge.Module.0.0.1\dotnet-template-azure-iot-edge-module\CSharp\>
 ```
-You could find our template with short name *aziotedgemodule* in the output:
+You could find the template with short name *aziotedgemodule* in output:
 
 ```
 Templates                                         Short Name              Language          Tags
@@ -74,13 +55,7 @@ MVC ViewImports                                   viewimports                   
 MVC ViewStart                                     viewstart                                 Web/ASP.NET
 ```
 
-Check out all arguments the template may take:
-```
-dotnet new aziotedgemodule --help
-```
-
-It will output a full list as following:
-
+Check out the template details:
 ```
 PS C:\Users\qisun\Desktop> dotnet new aziotedgemodule --help
 Usage: new [options]
@@ -110,10 +85,10 @@ Options:
                     Default: true
 ```
 
-Now create the azure iot edge module by the template with arguments you want:
+Now create the azure iot edge module by the template with name:
 
 ```
-dotnet new aziotedgemodule -n <ModuleName>
+dotnet new aziotedgemodule -n <name>
 ```
 
 We support multiple architectures, but currently only linux-x64 is ready. So it is set the default.
