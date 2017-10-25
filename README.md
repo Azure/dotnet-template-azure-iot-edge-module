@@ -11,19 +11,18 @@ This ReadMe consists of two parts:
 
 ## Get Started
 
-Make sure you have [.NET Core SDK](https://www.microsoft.com/net/core#windowscmd) installed.
+Make sure you have [.NET Core SDK](https://www.microsoft.com/net/core#windowscmd) and [Nuget](https://www.nuget.org/) installed.
 
-Make sure you have [Nuget](https://www.nuget.org/) installed and better add it to environment variables so that you could just type *nuget* in command line to use it.
+Config the nuget source:
 
-Config the nuget source: 
 - For Nuget V3
 ```
-nuget sources add -Name AzureIoTEdgeModule -source https://www.myget.org/F/dotnet-template-azure-iot-edge-module/api/v3/index.json
+nuget sources add -name AzureIoTEdgeModule -source https://www.myget.org/F/dotnet-template-azure-iot-edge-module/api/v3/index.json
 ```
 
 - For Nuget V2
 ```
-nuget sources add -Name AzureIoTEdgeModule -source https://www.myget.org/F/dotnet-template-azure-iot-edge-module/api/v2
+nuget sources add -name AzureIoTEdgeModule -source https://www.myget.org/F/dotnet-template-azure-iot-edge-module/api/v2
 ```
 Run dotnet command to install the template:
 
