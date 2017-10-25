@@ -2,7 +2,7 @@
 <package>
     <metadata>
     <id>Azure.IoT.Edge.Module</id>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <title>Azure IoT Edge Module</title>
     <authors>VS China IoT Tooling</authors>
     <owners>VS China IoT Tooling (vschinaiot@microsoft.com)</owners>
