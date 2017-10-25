@@ -2,8 +2,8 @@
 > dotnet template to do scaffolding tool for azure iot edge module development.
 
 This ReadMe consists of two parts:
-- Get Started to introduce how to install the dotnet template nuget package step by step
-- Containerize the module
+- Guidance of how to install the dotnet template step by step
+- Containerize the the custom module to docker
 
   The dotnet template sets up all necessary files for you to focus on module functionality programming.
 
@@ -11,23 +11,24 @@ This ReadMe consists of two parts:
 
 ## Get Started
 
+Make sure you have [.NET Core SDK](https://www.microsoft.com/net/core#windowscmd) installed.
+
 Make sure you have [Nuget](https://www.nuget.org/) installed and better add it to environment variables so that you could just type *nuget* in command line to use it.
 
-- For NuGet V3
+Config the nuget source: 
+- For Nuget V3
 ```
-nuget install Azure.IoT.Edge.Module -source https://www.myget.org/F/dotnet-template-azure-iot-edge-module/api/v3/index.json
-```
-
-- For NuGet V2
-
-```
-nuget install Azure.IoT.Edge.Module -source https://www.myget.org/F/dotnet-template-azure-iot-edge-module/api/v2
+nuget sources add -Name AzureIoTEdgeModule -source https://www.myget.org/F/dotnet-template-azure-iot-edge-module/api/v3/index.json
 ```
 
-You will get a new folder with name *Azure.IoT.Edge.Module.* along with version, run dotnet command to install the template with correct path:
+- For Nuget V2
+```
+nuget sources add -Name AzureIoTEdgeModule -source https://www.myget.org/F/dotnet-template-azure-iot-edge-module/api/v2
+```
+Run dotnet command to install the template:
 
 ```
-dotnet new -i <.\Azure.IoT.Edge.Module.0.0.1\dotnet-template-azure-iot-edge-module\CSharp\>
+dotnet new -i Azure.IoT.Edge.Module
 ```
 You could find the template with short name *aziotedgemodule* in output:
 
