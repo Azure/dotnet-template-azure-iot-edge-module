@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
     <metadata>
-    <id>Azure.IoT.Edge.Module</id>
-    <version>0.0.3</version>
+    <id>Microsoft.Azure.IoT.Edge.Module</id>
+    <version>0.1.0</version>
     <title>Azure IoT Edge Module</title>
     <authors>Microsoft</authors>
     <owners>microsoft, nugetazureiotedge</owners>
