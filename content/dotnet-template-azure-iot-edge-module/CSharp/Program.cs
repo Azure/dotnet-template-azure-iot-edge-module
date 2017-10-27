@@ -54,9 +54,9 @@ namespace SampleModule
                 DeviceClient IoTHubModuleClient = DeviceClient.CreateFromConnectionString(Environment.GetEnvironmentVariable("EdgeHubConnectionString"), settings);
                 await IoTHubModuleClient.OpenAsync();
                 Console.WriteLine("IoT Hub module client initialized.");
-
-                // Register callback to be called when a message is sent to "input1"
-                await IoTHubModuleClient.SetEventHandlerAsync("input1", PipeMessage, IoTHubModuleClient);
+                
+                // Register callback to be called when a message is received by the module
+                await IoTHubModuleClient.SetEventDefaultHandlerAsync(PipeMessage, IoTHubModuleClient);
             }
             catch (AggregateException ex)
             {
@@ -100,9 +100,12 @@ namespace SampleModule
                 {
                     pipeMessage.Properties.Add(prop.Key, prop.Value);
                 }
-                await deviceClient.SendEventAsync("output1", pipeMessage);
+                await deviceClient.SendEventAsync(pipeMessage);
                 Console.WriteLine("Received message sent");
             }
+
+            // We need to indicate that we have completed the message treatment
+            await deviceClient.CompleteAsync(message);
         }
     }
 }
