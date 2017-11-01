@@ -13,21 +13,10 @@ This ReadMe consists of two parts:
 
 Make sure you have [.NET Core SDK](https://www.microsoft.com/net/core#windowscmd) and [Nuget](https://www.nuget.org/) installed.
 
-Config the nuget source:
-
-- For Nuget V3
-```
-nuget sources add -name AzureIoTEdgeModule -source https://www.myget.org/F/dotnet-template-azure-iot-edge-module/api/v3/index.json
-```
-
-- For Nuget V2
-```
-nuget sources add -name AzureIoTEdgeModule -source https://www.myget.org/F/dotnet-template-azure-iot-edge-module/api/v2
-```
 Run dotnet command to install the template:
 
 ```
-dotnet new -i Azure.IoT.Edge.Module
+dotnet new -i Microsoft.Azure.IoT.Edge.Module
 ```
 You could find the template with short name *aziotedgemodule* in output:
 
@@ -93,7 +82,7 @@ dotnet new aziotedgemodule -n <name>
 
 We support multiple architectures, but currently only linux-x64 is ready. So it is set the default.
 
-## Deploy and run the module
+## Containerize the custom module
 
 azure-iot-edge-module sets up the Azure IoT Edge Module development environment, generating all necessary files for you.
 
@@ -131,56 +120,6 @@ Reference [How to create an azure iot hub] (https://docs.microsoft.com/en-us/azu
 Navigate to your iot hub in azure portal, find the **Device Explorer** to **Add** a device in the portal.
 Mark up the device connection string after creating completed.
 
-### Install the edge cli
-
-```
-npm install -g edge-explorer@latest --registry http://edgenpm.southcentralus.cloudapp.azure.com/
-```
-### Install tool to launch Azure IoT Edge
-
-> On Windows, If you have issues on the command line with the --registry command, try to use a PowerShell session
-
-```
-npm install -g launch-edge-runtime@latest --registry http://edgenpm.southcentralus.cloudapp.azure.com/
-```
-
-### Launch edge runtime and login edge-explorer
-
-Make sure you’re using a device connection string and not IoT Hub connection string if you get the error, “Connection string does not have a DeviceId element. Please supply a *device* connection string and not an Azure IoT Hub connection string.”
-
-```
-launch-edge-runtime -c "<IoT Hub device connection string>"
-```
-
-Use the edge cli to log into the IoT hub to which your edge device is registered. Note that you need the IoT hub’s owner connection string. You can find this in the Azure Portal by going to your IoT hub -> Shared Access Policies -> iothubowner
-
-```
-edge-explorer login "<IoT Hub connection string for iothubowner policy*>"
-```
-
-### Create and run local docker registry
-
-```
-docker run -d -p 5000:5000 --name registry registry:2
-```
-
-### Build your module
-
-Navigate to the module directory we just created, you could build the module in any architecture as you want, let's take linux-x64 for example:
-
-```
-dotnet build
-dotnet publish -f netcoreapp2.0 -o .\out\linux-x64\
-copy .\Docker\linux-x64\Dockerfile .\out\linux-x64\
-docker build --build-arg EXE_DIR=. -t localhost:5000/<name_your_module>:latest .\out\linux-x64\
-```
-
-### Push the image to local registry
-
-```
-docker push localhost:5000/<lower_case_module_name>
-```
-
-### Deploy the module
+### Deploy the run the module
 
 TBD
