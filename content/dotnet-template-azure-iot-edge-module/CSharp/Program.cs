@@ -14,7 +14,6 @@ namespace SampleModule
     class Program
     {
         static int counter;
-
         static void Main(string[] args)
         {
             // Initialize Edge Module
@@ -54,9 +53,10 @@ namespace SampleModule
                 DeviceClient IoTHubModuleClient = DeviceClient.CreateFromConnectionString(Environment.GetEnvironmentVariable("EdgeHubConnectionString"), settings);
                 await IoTHubModuleClient.OpenAsync();
                 Console.WriteLine("IoT Hub module client initialized.");
-                
+
                 // Register callback to be called when a message is received by the module
-                await IoTHubModuleClient.SetEventDefaultHandlerAsync(PipeMessage, IoTHubModuleClient);
+                await IoTHubModuleClient.SetInputMessageHandlerAsync("input1", PipeMessage, IoTHubModuleClient);
+
             }
             catch (AggregateException ex)
             {
@@ -79,7 +79,7 @@ namespace SampleModule
         /// It just pipe the messages without any change.
         /// It prints all the incoming messages.
         /// </summary>
-        static async Task PipeMessage(Message message, object userContext)
+        static async Task<MessageReponse> PipeMessage(Message message, object userContext)
         {
             int counterValue = Interlocked.Increment(ref counter);
 
@@ -100,12 +100,10 @@ namespace SampleModule
                 {
                     pipeMessage.Properties.Add(prop.Key, prop.Value);
                 }
-                await deviceClient.SendEventAsync(pipeMessage);
+                await deviceClient.SendEventAsync("output1", pipeMessage);
                 Console.WriteLine("Received message sent");
             }
-
-            // We need to indicate that we have completed the message treatment
-            await deviceClient.CompleteAsync(message);
+            return MessageResponse.Completed;
         }
     }
 }
