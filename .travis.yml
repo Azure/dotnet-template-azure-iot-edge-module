@@ -3,7 +3,7 @@ branches:
   - master
 language: csharp
 install:
-  - nuget pack Azure.IoT.Edge.Module.nuspec -NoDefaultExcludes
+  - nuget pack -NoDefaultExcludes
   - FILENAME="$(find . -name '*.nupkg')"
   - nuget push "${FILENAME}" $APIKEY -Source $PACKAGE_SOURCE
 script:
