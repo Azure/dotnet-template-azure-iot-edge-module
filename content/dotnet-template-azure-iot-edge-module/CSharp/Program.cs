@@ -79,7 +79,7 @@ namespace SampleModule
         /// It just pipe the messages without any change.
         /// It prints all the incoming messages.
         /// </summary>
-        static async Task<MessageReponse> PipeMessage(Message message, object userContext)
+        static async Task<MessageResponse> PipeMessage(Message message, object userContext)
         {
             int counterValue = Interlocked.Increment(ref counter);
 
