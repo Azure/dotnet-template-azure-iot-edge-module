@@ -33,6 +33,19 @@
             "type": "parameter",
             "datatype": "bool",
             "defaultValue": "true"
+        },
+        "target": {
+            "type": "parameter",
+            "datatype": "choice",
+            "defaultValue": "All",
+            "choices": [
+                {
+                    "choice": "All"
+                },
+                {
+                    "choice": "Config"
+                }
+            ]
         }
     },
     "sources": [
@@ -45,15 +58,21 @@
             ],
             "modifiers": [
                 {
-                    "condition": "(windows-nano)",
+                    "condition": "(windows-nano && target != 'Config')",
                     "include": [
-                        "Docker/windows-nano/Dockerfile"
+                        "Docker/windows-nano/*"
                     ]
                 },
                 {
-                    "condition": "(linux-x64)",
+                    "condition": "(linux-x64 && target != 'Config')",
                     "include": [
-                        "Docker/linux-x64/Dockerfile"
+                        "Docker/linux-x64/*"
+                    ]
+                },
+                {
+                    "condition": "(target == 'Config')",
+                    "exclude": [
+                        "*.cs", "*.csproj", ".gitignore"
                     ]
                 }
             ]
@@ -61,7 +80,7 @@
     ],
     "postActions": [
         {
-            "condition": "(!skipRestore)",
+            "condition": "(!skipRestore && target != 'Config')",
             "description": "Restore NuGet packages required by this project.",
             "manualInstructions": [
                 {
