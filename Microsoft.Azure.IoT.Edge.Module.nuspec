@@ -2,7 +2,7 @@
 <package>
     <metadata>
     <id>Microsoft.Azure.IoT.Edge.Module</id>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
     <title>Azure IoT Edge Module</title>
     <authors>Microsoft</authors>
     <owners>microsoft, nugetazureiotedge</owners>
@@ -15,6 +15,6 @@
     <tags>azure iot edge dotnet template</tags>
     </metadata>
     <files>
-      <file src="./content/**/*" />
+      <file src="content/**/*" />
     </files>
 </package>

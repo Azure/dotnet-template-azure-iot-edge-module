@@ -1,6 +1,8 @@
 {
     "author": "Summer Sun",
-    "classifications": ["Console"],
+    "classifications": [
+        "Console"
+    ],
     "name": "Azure IoT Edge Module",
     "identity": "Azure.IoT.Edge.Module.CSharp",
     "groupIdentity": "Azure.IoT.Edge.Module",
@@ -9,10 +11,13 @@
         "language": "C#",
         "type": "project"
     },
+    "sourceName": "SampleModule",
     "preferNameDirectory": "true",
-    "primaryOutputs": [{
-        "path": ""
-    }],
+    "primaryOutputs": [
+        {
+            "path": ""
+        }
+    ],
     "symbols": {
         "skipRestore": {
             "type": "parameter",
@@ -23,18 +28,47 @@
             "type": "parameter",
             "datatype": "bool",
             "defaultValue": "true"
+        },
+        "windows-nano": {
+            "type": "parameter",
+            "datatype": "bool",
         }
     },
-    "sources": [{
-        "exclude": [".template.config/*", "bin/**/*", "obj/**/*"]
-    }],
-    "postActions": [{
-        "condition": "(!skipRestore)",
-        "description": "Restore NuGet packages required by this project.",
-        "manualInstructions": [{
-            "text": "Run 'dotnet restore -s https://www.myget.org/F/aziot-device-sdk/api/v3/index.json'"
-        }],
-        "actionId": "210D431B-A78B-4D2F-B762-4ED3E3EA9025",
-        "continueOnError": true
-    }]
+    "sources": [
+        {
+            "exclude": [
+                ".template.config/*",
+                "Docker/**/*",
+                "bin/**/*",
+                "obj/**/*"
+            ],
+            "modifiers": [
+                {
+                    "condition": "(windows-nano)",
+                    "include": [
+                        "Docker/windows-nano/Dockerfile"
+                    ]
+                },
+                {
+                    "condition": "(linux-x64)",
+                    "include": [
+                        "Docker/linux-x64/Dockerfile"
+                    ]
+                }
+            ]
+        }
+    ],
+    "postActions": [
+        {
+            "condition": "(!skipRestore)",
+            "description": "Restore NuGet packages required by this project.",
+            "manualInstructions": [
+                {
+                    "text": "Run 'dotnet restore -s https://www.myget.org/F/aziot-device-sdk/api/v3/index.json'"
+                }
+            ],
+            "actionId": "210D431B-A78B-4D2F-B762-4ED3E3EA9025",
+            "continueOnError": true
+        }
+    ]
 }
