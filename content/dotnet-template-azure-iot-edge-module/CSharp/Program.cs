@@ -43,7 +43,7 @@ namespace SampleModule
             try
             {
                 // Open a connection to the Edge runtime using MQTT transport and 
-                // the connection string provded as an environment variable
+                // the connection string provided as an environment variable
                 ITransportSettings[] settings =
                 {
                     new MqttTransportSettings(TransportType.Mqtt_Tcp_Only)
