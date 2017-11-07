@@ -6,10 +6,4 @@ WORKDIR /app
 
 COPY $EXE_DIR/ ./
 
-RUN apt-get update
-
-RUN apt-get install -y unzip procps
-
-RUN curl -sSL https://aka.ms/getvsdbgsh | bash /dev/stdin -v latest -l ~/vsdbg
-
 CMD ["dotnet", "SampleModule.dll"]
