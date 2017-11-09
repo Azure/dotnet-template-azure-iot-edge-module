@@ -2,7 +2,9 @@ namespace SampleModule
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Runtime.Loader;
+    using System.Security.Cryptography.X509Certificates;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
@@ -14,8 +16,12 @@ namespace SampleModule
     class Program
     {
         static int counter;
+
         static void Main(string[] args)
         {
+            // Install CA certificate
+            InstallCert();
+
             // Initialize Edge Module
             InitEdgeModule().Wait();
 
@@ -25,6 +31,7 @@ namespace SampleModule
             Console.CancelKeyPress += (sender, cpe) => cts.Cancel();
             WhenCancelled(cts.Token).Wait();
         }
+
         /// <summary>
         /// Handles cleanup operations when app is cancelled or unloads
         /// </summary>
@@ -36,26 +43,45 @@ namespace SampleModule
         }
 
         /// <summary>
+        /// Add certificate in local cert store for use by client for secure connection to IoT Edge runtime
+        /// </summary>
+        static void InstallCert()
+        {
+            string certPath = Environment.GetEnvironmentVariable("EdgeModuleCACertificateFile");
+            if (string.IsNullOrWhiteSpace(certPath))
+            {
+                // We cannot proceed further without a proper cert file
+                Console.WriteLine("Missing path to certificate collection file.");
+                throw new InvalidOperationException("Missing path to certificate file.");
+            } else if (!File.Exists(certPath))
+            {
+                // We cannot proceed further without a proper cert file
+                Console.WriteLine("Missing certificate collection file.");
+                throw new InvalidOperationException("Missing certificate file.");
+            }
+            X509Store store = new X509Store(StoreName.Root, StoreLocation.CurrentUser);
+            store.Open(OpenFlags.ReadWrite);
+            store.Add(new X509Certificate2(X509Certificate2.CreateFromCertFile(certPath)));
+            Console.WriteLine("Added Cert: " + certPath);
+            store.Close();
+        }
+
+
+        /// <summary>
         /// Initializes the Azure IoT Client for the Edge Module
         /// </summary>
         static async Task InitEdgeModule()
         {
             try
             {
-                // Open a connection to the Edge runtime using MQTT transport and 
+                // Open a connection to the Edge runtime using MQTT transport and
                 // the connection string provided as an environment variable
-                ITransportSettings[] settings =
-                {
-                    new MqttTransportSettings(TransportType.Mqtt_Tcp_Only)
-                    { RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true }
-                };
-
-                DeviceClient IoTHubModuleClient = DeviceClient.CreateFromConnectionString(Environment.GetEnvironmentVariable("EdgeHubConnectionString"), settings);
-                await IoTHubModuleClient.OpenAsync();
+                DeviceClient ioTHubModuleClient = DeviceClient.CreateFromConnectionString(Environment.GetEnvironmentVariable("EdgeHubConnectionString"), TransportType.Mqtt_Tcp_Only);
+                await ioTHubModuleClient.OpenAsync();
                 Console.WriteLine("IoT Hub module client initialized.");
 
                 // Register callback to be called when a message is received by the module
-                await IoTHubModuleClient.SetInputMessageHandlerAsync("input1", PipeMessage, IoTHubModuleClient);
+                await ioTHubModuleClient.SetInputMessageHandlerAsync("input1", PipeMessage, ioTHubModuleClient);
 
             }
             catch (AggregateException ex)
