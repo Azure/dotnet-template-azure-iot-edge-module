@@ -49,7 +49,7 @@
           "route": "FROM /* INTO $upstream"
         },
         "storeAndForwardConfiguration": {
-          "timeToLiveSecs": 10
+          "timeToLiveSecs": 7200
         }
       }
     }
