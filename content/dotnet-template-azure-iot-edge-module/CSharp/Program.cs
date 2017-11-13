@@ -1,8 +1,9 @@
 namespace SampleModule
 {
     using System;
+	using System.IO;
     using System.Collections.Generic;
-    using System.IO;
+    using System.Runtime.InteropServices;
     using System.Runtime.Loader;
     using System.Security.Cryptography.X509Certificates;
     using System.Text;
@@ -19,11 +20,10 @@ namespace SampleModule
 
         static void Main(string[] args)
         {
-            // Install CA certificate
+            // The Edge runtime gives us the connection string we need -- it is injected as an environment variable
+            string connectionString = Environment.GetEnvironmentVariable("EdgeHubConnectionString");
             InstallCert();
-
-            // Initialize Edge Module
-            InitEdgeModule().Wait();
+            Init(connectionString).Wait();
 
             // Wait until the app unloads or is cancelled
             var cts = new CancellationTokenSource();
@@ -47,16 +47,23 @@ namespace SampleModule
         /// </summary>
         static void InstallCert()
         {
+            // Suppress cert validation on Windows for now
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return;
+            }
+
             string certPath = Environment.GetEnvironmentVariable("EdgeModuleCACertificateFile");
             if (string.IsNullOrWhiteSpace(certPath))
             {
                 // We cannot proceed further without a proper cert file
-                Console.WriteLine("Missing path to certificate collection file.");
+                Console.WriteLine($"Missing path to certificate collection file: {certPath}");
                 throw new InvalidOperationException("Missing path to certificate file.");
-            } else if (!File.Exists(certPath))
+            }
+            else if (!File.Exists(certPath))
             {
                 // We cannot proceed further without a proper cert file
-                Console.WriteLine("Missing certificate collection file.");
+                Console.WriteLine($"Missing path to certificate collection file: {certPath}");
                 throw new InvalidOperationException("Missing certificate file.");
             }
             X509Store store = new X509Store(StoreName.Root, StoreLocation.CurrentUser);
@@ -68,36 +75,28 @@ namespace SampleModule
 
 
         /// <summary>
-        /// Initializes the Azure IoT Client for the Edge Module
+        /// Initializes the DeviceClient and sets up the callback to receive
+        /// messages containing temperature information
         /// </summary>
-        static async Task InitEdgeModule()
+        static async Task Init(string connectionString)
         {
-            try
-            {
-                // Open a connection to the Edge runtime using MQTT transport and
-                // the connection string provided as an environment variable
-                DeviceClient ioTHubModuleClient = DeviceClient.CreateFromConnectionString(Environment.GetEnvironmentVariable("EdgeHubConnectionString"), TransportType.Mqtt_Tcp_Only);
-                await ioTHubModuleClient.OpenAsync();
-                Console.WriteLine("IoT Hub module client initialized.");
+            Console.WriteLine("Connection String {0}", connectionString);
 
-                // Register callback to be called when a message is received by the module
-                await ioTHubModuleClient.SetInputMessageHandlerAsync("input1", PipeMessage, ioTHubModuleClient);
-
-            }
-            catch (AggregateException ex)
+            MqttTransportSettings mqttSetting = new MqttTransportSettings(TransportType.Mqtt_Tcp_Only);
+            // Suppress cert validation on Windows for now
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                foreach (Exception exception in ex.InnerExceptions)
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Error when initializing module: {0}", exception);
-                }
+                mqttSetting.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine();
-                Console.WriteLine("Error when initializing module: {0}", ex.Message);
-            }
+            ITransportSettings[] settings = { mqttSetting };
 
+            // Open a connection to the Edge runtime
+            DeviceClient deviceClient = DeviceClient.CreateFromConnectionString(connectionString, settings);
+            await deviceClient.OpenAsync();
+            Console.WriteLine("IoT Hub module client initialized.");
+
+            // Register callback to be called when a message is received by the module
+            await deviceClient.SetInputMessageHandlerAsync("input1", PipeMessage, deviceClient);
         }
 
         /// <summary>
