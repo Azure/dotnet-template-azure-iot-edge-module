@@ -59,9 +59,10 @@ Options:
 Azure IoT Edge Module (C#)
 Author: Summer Sun
 Options:
-  -s|--skipRestore
-                      bool - Optional
-                      Default: false
+  -t|--target
+                          all
+                          deploy
+                      Default: all
 
   -lx|--linux-x64
                       bool - Optional
@@ -71,11 +72,14 @@ Options:
                       bool - Optional
                       Default: true
 
-  -t|--target
-                          All
-                          Config
-                      Default: All
+  -s|--skipRestore
+                      bool - Optional
+                      Default: false
+
 ```
+
+Parameter -t means you want all azure iot edge module files or just a deployment.json file.
+Parameter -lx means you want Dockerfile for linux-x64 or not. So does the -wn for windows-nano.
 
 Now create the azure iot edge module by the template with name:
 

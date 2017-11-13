@@ -19,10 +19,18 @@
         }
     ],
     "symbols": {
-        "skipRestore": {
+        "target": {
             "type": "parameter",
-            "datatype": "bool",
-            "defaultValue": "false"
+            "datatype": "choice",
+            "defaultValue": "all",
+            "choices": [
+                {
+                    "choice": "all"
+                },
+                {
+                    "choice": "deploy"
+                }
+            ]
         },
         "linux-x64": {
             "type": "parameter",
@@ -34,18 +42,10 @@
             "datatype": "bool",
             "defaultValue": "true"
         },
-        "target": {
+        "skipRestore": {
             "type": "parameter",
-            "datatype": "choice",
-            "defaultValue": "All",
-            "choices": [
-                {
-                    "choice": "All"
-                },
-                {
-                    "choice": "Config"
-                }
-            ]
+            "datatype": "bool",
+            "defaultValue": "false"
         }
     },
     "sources": [
@@ -58,19 +58,19 @@
             ],
             "modifiers": [
                 {
-                    "condition": "(windows-nano && target != 'Config')",
+                    "condition": "(windows-nano && target != 'deploy')",
                     "include": [
                         "Docker/windows-nano/*"
                     ]
                 },
                 {
-                    "condition": "(linux-x64 && target != 'Config')",
+                    "condition": "(linux-x64 && target != 'deploy')",
                     "include": [
                         "Docker/linux-x64/*"
                     ]
                 },
                 {
-                    "condition": "(target == 'Config')",
+                    "condition": "(target == 'deploy')",
                     "exclude": [
                         "*.cs", "*.csproj", ".gitignore"
                     ]
@@ -80,7 +80,7 @@
     ],
     "postActions": [
         {
-            "condition": "(!skipRestore && target != 'Config')",
+            "condition": "(!skipRestore && target != 'deploy')",
             "description": "Restore NuGet packages required by this project.",
             "manualInstructions": [
                 {
