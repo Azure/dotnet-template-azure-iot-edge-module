@@ -1,14 +1,14 @@
 # dotnet-template-azure-iot-edge-module
-> dotnet template to do scaffolding for azure iot edge module development.
+> dotnet template to do scaffolding for Azure IoT Edge module development.
 
-This ReadMe will introduce how to install the dotnet template and then create azure iot edge module with the template step by step.
+This README will introduce how to install the dotnet template and then create Azure IoT Edge module with the template step by step.
 The template will set up all necessary files for you to focus on functionality programming.
 
 ## Get Started
 
 Make sure you have [.Net Core 2.0 SDK](https://www.microsoft.com/net/download/core) installed.
 
-Run dotnet command to install the template:
+Run `dotnet` command to install the template:
 
 ```
 dotnet new -i Microsoft.Azure.IoT.Edge.Module
@@ -78,10 +78,10 @@ Options:
 
 ```
 
-Parameter -t means you want all azure iot edge module files or just a deployment.json file.
-Parameter -lx means you want Dockerfile for linux-x64 or not. So does the -wn for windows-nano.
+Parameter `-t` means you want all Azure IoT Edge module files or just a deployment.json file.
+Parameter `-lx` means you want Dockerfile for linux-x64 or not. So does the `-wn` for windows-nano.
 
-Now create the azure iot edge module by the template with name:
+Now create the Azure IoT Edge module by the template with name:
 
 ```
 dotnet new aziotedgemodule -n <your_module_name>
