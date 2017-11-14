@@ -1,19 +1,14 @@
 # dotnet-template-azure-iot-edge-module
-> dotnet template to do scaffolding tool for azure iot edge module development.
+> dotnet template to do scaffolding for Azure IoT Edge module development.
 
-This ReadMe consists of two parts:
-- Guidance of how to install the dotnet template step by step
-- Containerize the the custom module to docker
-
-  The dotnet template sets up all necessary files for you to focus on module functionality programming.
-
-  After the coding part completed, following the steps in this part to leverage docker to containerize your module so that they can be deployed and monitored by the new features of Azure IoT Edge more straight forward.
+This README will introduce how to install the dotnet template and then create Azure IoT Edge module with the template step by step.
+The template will set up all necessary files for you to focus on functionality programming.
 
 ## Get Started
 
-Make sure you have [.NET Core SDK](https://www.microsoft.com/net/core#windowscmd) and [Nuget](https://www.nuget.org/) installed.
+Make sure you have [.Net Core 2.0 SDK](https://www.microsoft.com/net/download/core) installed.
 
-Run dotnet command to install the template:
+Run `dotnet` command to install the template:
 
 ```
 dotnet new -i Microsoft.Azure.IoT.Edge.Module
@@ -46,14 +41,13 @@ MVC ViewStart                                     viewstart                     
 
 Check out the template details:
 ```
-PS C:\Users\qisun\Desktop> dotnet new aziotedgemodule --help
+PS C:\> dotnet new aziotedgemodule --help
 Usage: new [options]
 
 Options:
   -h, --help          Displays help for this command.
   -l, --list          Lists templates containing the specified name. If no name is specified, lists all templates.
-  -n, --name          The name for the output being created. If no name is specified, the name of the current directory
-is used.
+  -n, --name          The name for the output being created. If no name is specified, the name of the current directory is used.
   -o, --output        Location to place the generated output.
   -i, --install       Installs a source or a template pack.
   -u, --uninstall     Uninstalls a source or a template pack.
@@ -65,61 +59,33 @@ is used.
 Azure IoT Edge Module (C#)
 Author: Summer Sun
 Options:
-  -s|--skipRestore
-                    bool - Optional
-                    Default: false
+  -t|--target
+                          all
+                          deploy
+                      Default: all
 
   -lx|--linux-x64
-                    bool - Optional
-                    Default: true
+                      bool - Optional
+                      Default: true
+
+  -wn|--windows-nano
+                      bool - Optional
+                      Default: true
+
+  -s|--skipRestore
+                      bool - Optional
+                      Default: false
+
 ```
 
-Now create the azure iot edge module by the template with name:
+Parameter `-t` means you if want all Azure IoT Edge module files or just a deployment.json file.
+
+Parameter `-lx` means you if want Dockerfile for linux-x64 or not. So does the `-wn` for windows-nano.
+
+Parameter `-s` means if you want to skip the restore of packages referenced in module project.
+
+Now create the Azure IoT Edge module by the template with name:
 
 ```
-dotnet new aziotedgemodule -n <name>
+dotnet new aziotedgemodule -n <your_module_name>
 ```
-
-We support multiple architectures, but currently only linux-x64 is ready. So it is set the default.
-
-## Containerize the custom module
-
-azure-iot-edge-module sets up the Azure IoT Edge Module development environment, generating all necessary files for you.
-
-To run the module in docker container, there are several steps to do.
-
-### Install docker
-Ubuntu
-
-https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/
-
-Windows 10
-
-https://download.docker.com/win/stable/InstallDocker.msi
-
-MAC
-
-https://store.docker.com/editions/community/docker-ce-desktop-mac
-
-Now navigate to the generated module folder in the first place.
-
-### Setup azure resources
-
-If you have develop experience with Azure, you could skip this part and go ahead to next one.
-
-1. Create an active Azure account
-
-(If you don't have an account, you can create one [free account](http://azure.microsoft.com/pricing/free-trial/) in minutes.)
-
-2. Create an Azure IoT Hub
-
-Reference [How to create an azure iot hub] (https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-create-through-portal) for step by step guidance.
-
-3. Create a device in azure iot hub
-
-Navigate to your iot hub in azure portal, find the **Device Explorer** to **Add** a device in the portal.
-Mark up the device connection string after creating completed.
-
-### Deploy the run the module
-
-TBD
