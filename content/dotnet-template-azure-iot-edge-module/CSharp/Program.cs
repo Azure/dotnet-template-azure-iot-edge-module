@@ -22,10 +22,11 @@ namespace SampleModule
         {
             // The Edge runtime gives us the connection string we need -- it is injected as an environment variable
             string connectionString = Environment.GetEnvironmentVariable("EdgeHubConnectionString");
-            InstallCert();
 
             // Cert verification is not yet fully functional when using Windows OS for the container
-            Init(connectionString, RuntimeInformation.IsOSPlatform(OSPlatform.Windows)).Wait();
+            bool bypassCertVerification = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+            if (!bypassCertVerification) InstallCert();
+            Init(connectionString, bypassCertVerification).Wait();
 
             // Wait until the app unloads or is cancelled
             var cts = new CancellationTokenSource();
@@ -49,12 +50,6 @@ namespace SampleModule
         /// </summary>
         static void InstallCert()
         {
-            // Suppress cert validation on Windows for now
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                return;
-            }
-
             string certPath = Environment.GetEnvironmentVariable("EdgeModuleCACertificateFile");
             if (string.IsNullOrWhiteSpace(certPath))
             {
