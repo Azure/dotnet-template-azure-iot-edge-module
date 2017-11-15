@@ -23,7 +23,9 @@ namespace SampleModule
             // The Edge runtime gives us the connection string we need -- it is injected as an environment variable
             string connectionString = Environment.GetEnvironmentVariable("EdgeHubConnectionString");
             InstallCert();
-            Init(connectionString).Wait();
+
+            // Cert verification is not yet fully functional when using Windows OS for the container
+            Init(connectionString, RuntimeInformation.IsOSPlatform(OSPlatform.Windows)).Wait();
 
             // Wait until the app unloads or is cancelled
             var cts = new CancellationTokenSource();
@@ -78,25 +80,25 @@ namespace SampleModule
         /// Initializes the DeviceClient and sets up the callback to receive
         /// messages containing temperature information
         /// </summary>
-        static async Task Init(string connectionString)
+        static async Task Init(string connectionString, bool bypassCertVerification = false)
         {
             Console.WriteLine("Connection String {0}", connectionString);
 
             MqttTransportSettings mqttSetting = new MqttTransportSettings(TransportType.Mqtt_Tcp_Only);
-            // Suppress cert validation on Windows for now
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            // During dev you might want to bypass the cert verification. It is highly recommended to verify certs systematically in production
+            if (bypassCertVerification)
             {
                 mqttSetting.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
             }
             ITransportSettings[] settings = { mqttSetting };
 
             // Open a connection to the Edge runtime
-            DeviceClient deviceClient = DeviceClient.CreateFromConnectionString(connectionString, settings);
-            await deviceClient.OpenAsync();
+            DeviceClient ioTHubModuleClient = DeviceClient.CreateFromConnectionString(connectionString, settings);
+            await ioTHubModuleClient.OpenAsync();
             Console.WriteLine("IoT Hub module client initialized.");
 
             // Register callback to be called when a message is received by the module
-            await deviceClient.SetInputMessageHandlerAsync("input1", PipeMessage, deviceClient);
+            await ioTHubModuleClient.SetInputMessageHandlerAsync("input1", PipeMessage, ioTHubModuleClient);
         }
 
         /// <summary>
