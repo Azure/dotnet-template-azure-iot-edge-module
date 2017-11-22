@@ -2,7 +2,6 @@ namespace SampleModule
 {
     using System;
     using System.IO;
-    using System.Collections.Generic;
     using System.Runtime.InteropServices;
     using System.Runtime.Loader;
     using System.Security.Cryptography.X509Certificates;
@@ -11,8 +10,6 @@ namespace SampleModule
     using System.Threading.Tasks;
     using Microsoft.Azure.Devices.Client;
     using Microsoft.Azure.Devices.Client.Transport.Mqtt;
-    using Microsoft.Azure.Devices.Shared;
-    using Newtonsoft.Json;
 
     class Program
     {
