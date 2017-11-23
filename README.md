@@ -20,7 +20,7 @@ Templates                                         Short Name              Langua
 ---------------------------------------------------------------------------------------------------------------
 Console Application                               console                 [C#], F#, VB      Common/Console
 Class library                                     classlib                [C#], F#, VB      Common/Library
-Azure IoT Edge Module                             aziotedgemodule         [C#]              Console
+Azure IoT Edge Module                             aziotedgemodule         [C#], F#          Console
 Contoso Sample 06                                 sample06                [C#], F#          Console
 Unit Test Project                                 mstest                  [C#], F#, VB      Test/MSTest
 xUnit Test Project                                xunit                   [C#], F#, VB      Test/xUnit
@@ -75,6 +75,10 @@ Options:
   -s|--skipRestore
                       bool - Optional
                       Default: false
+
+  -lang|--language
+                      string - Optional
+                      Default: C#
 
 ```
 
