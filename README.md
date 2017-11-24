@@ -93,3 +93,9 @@ Now create the Azure IoT Edge module by the template with name:
 ```
 dotnet new aziotedgemodule -n <your_module_name>
 ```
+
+Optionally, to create an F# module use the `-lang` or `--language` flag as follows:
+
+```
+dotnet new aziotedgemodule -lang F# -n <your_module_name>
+``` 
