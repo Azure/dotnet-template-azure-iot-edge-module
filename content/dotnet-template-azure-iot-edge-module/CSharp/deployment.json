@@ -35,7 +35,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "<dockeruser>/<image>:<tag>",
+              "image": "<registry>/<image>:<tag>",
               "createOptions": "{}"
             }
           }
