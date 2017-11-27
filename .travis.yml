@@ -1,10 +1,7 @@
 branches:
   only:
   - master
+  - develop
 language: csharp
-install:
-  - nuget pack -NoDefaultExcludes
-  - FILENAME="$(find . -name '*.nupkg')"
-  - nuget push "${FILENAME}" $APIKEY -Source $PACKAGE_SOURCE
 script:
-  - echo "success"
+  - dotnet test Test/Test.csproj
