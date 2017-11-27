@@ -1,7 +1,10 @@
 branches:
   only:
   - master
-  - develop
 language: csharp
 script:
   - dotnet test Test/Test.csproj
+deploy:
+  on:
+    tag: true
+    script: nuget pack -NoDefaultExcludes && nuget push "$(find . -name '*.nupkg')" $APIKEY -Source $PACKAGE_SOURCE
