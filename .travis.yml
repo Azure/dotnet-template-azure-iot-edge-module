@@ -1,11 +1,11 @@
 language: csharp
+dotnet: 2.0.2
 script:
 - dotnet test Test/Test.csproj
 deploy:
-  script: nuget pack -NoDefaultExcludes && nuget push "$(find . -name '*.nupkg')" $APIKEY -Source $PACKAGE_SOURCE
+  provider: script
+  skip_cleanup: true
+  script: nuget pack -NoDefaultExcludes && nuget push *.nupkg $api_key -Source $nuget_source
   on:
     branch: master
     tags: true
-env:
-  matrix:
-    secure: R4BgOOzDH3SOUwTj9yTEwti7F3v0CCu+kA7VJza0J9y8Zu1mrPF7fBt/UG79o4x/mdZ5wmOkNz6DuTM2QoPB58VMxP4dyWbQvquprjkSbY40pCvGRwPhj9oskLC0CmqY4L3aHavXpJ6hQAGUnbXV7UB443D4Jqm07d3PdyPp04NxOGkN3d9/MfWyXUxsUadC+b++2NdIxSRU2xwxxaw4vN45qTnm6R6lghnpdLSrV78XpY5oIp5nmqoD09dogFe9e+8wV2AdjjB8IlgSpi+NFnEtuB0S/HqLAlpOHfvgPGi7mj7lwNhvWlGTgrGVovtPsrQTHYPu312prWSl0oH4RP3Ga370zGiWZuKkrBYcetkAR3DHOWR45gPMWmXG2PQAP0MoPwL5vj3Tfw6kDN1pB8RvzrQsV3xWGIswDRgECvUSDmR5Wnlqy9/hR9jNWjcsUZhGSCIKwCMSJzN7pjkxfXhSkJtO+OGsGHM533tzKDEH6eKvqYOMrq6326gYcsCfXAS2XltfijiAi0t/gS819TQdDXGDbmcggeC5prrAZ/E4gtd9qsRozhF0vLCDN7wDMYl0NaFTHtPwH9NFARTYW00fYq3Jj0dwtA0p95WoYVzCvvM8Iu553+hZfOcB8XxYC2bXpguSGe633/XzpAcgiFrdzjo6xmogBkPLzyznZu4=
