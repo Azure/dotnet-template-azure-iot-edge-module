@@ -1,10 +1,18 @@
-branches:
-  only:
-  - master
 language: csharp
-install:
-  - nuget pack -NoDefaultExcludes
-  - FILENAME="$(find . -name '*.nupkg')"
-  - nuget push "${FILENAME}" $APIKEY -Source $PACKAGE_SOURCE
+dotnet: 2.0.2
+before_install:
+  - mkdir -p .nuget
+  - wget -O .nuget/nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+  - mono .nuget/nuget.exe
 script:
-  - echo "success"
+- dotnet test Test/Test.csproj
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: mono .nuget/nuget.exe pack -NoDefaultExcludes && mono .nuget/nuget.exe push *.nupkg $api_key -Source https://www.nuget.org/api/v2/package
+  on:
+    branch: master
+    tags: true
+env:
+  global:
+    secure: g/X8Zr73cqAe6AuiAvyrGgPq8iYNukY0qBpAkzawGRyVlIJqm2EIJ40oD9Bo9p9XNRyLbpOTgl+UZQcnrgqkZf+diBXpQvQ4heVepO8DUFQb+9D9/7pxTp8Z9L+pvGBgjdq6lc+L8HYG6nAovy7pjP3S/G8Dzu9MIP09Hj1ODVkLTm5XHPiK5BEwf/hxSjISMXaMbcFxY6WGkuSnOyyNc3dwxcvLaa6nhqNfbUgMapnoTwqmRp8rwgTLrAABfUNNINCPWIYqwY/N65PpzXPoGtOh8DzcXTHO5NmVAvNS8Ruq7U7JynN5SyERHinYG8QkmaOw0DjwAvwH8FgKFFkFCDw3wexsXRJH4EvU48Kds7Wb3jnt5MzWUKEb9PrEjm26FrW2uJbCCIecfIcZZwvNYJaSiGK12d2srxgmnZaSXC7yhkh96JBG5aiCc04M9rO29gQ7CkenS+FR0rz7FJb2SLWiBunn/u6vDeH4hotzRmy3HHX8frki18cwOEHyNGSAeD87rtl8Xy5ShGs24+Q32O08sfiAvdjWoX7vfpeBHHe5F64dIc9cY1SEPxhtseJYgYhJVIBvJNhk9zCYMCUGopS6PdhBjbctEo/3PLFMdxlTJRm8ndRSCtVrSSfkijavanl252jGtob9L4i+YwcuAegfZBBaCrAaLd+7z7wjILI=
