@@ -5,7 +5,7 @@ script:
 deploy:
   provider: script
   skip_cleanup: true
-  script: nuget pack -NoDefaultExcludes && nuget push *.nupkg $api_key -Source https://www.nuget.org/api/v2/package
+  script: nuget update -self && nuget pack -NoDefaultExcludes && nuget push *.nupkg $api_key -Source https://www.nuget.org/api/v2/package
   on:
     branch: master
     tags: true
