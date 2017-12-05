@@ -1,0 +1,94 @@
+{
+    "author": "William Berry",
+    "classifications": [
+        "Console"
+    ],
+    "name": "Azure IoT Edge Module",
+    "identity": "Azure.IoT.Edge.Module.FSharp",
+    "groupIdentity": "Azure.IoT.Edge.Module",
+    "shortName": "aziotedgemodule",
+    "tags": {
+        "language": "F#",
+        "type": "project"
+    },
+    "sourceName": "SampleModule",
+    "preferNameDirectory": "true",
+    "primaryOutputs": [
+        {
+            "path": ""
+        }
+    ],
+    "symbols": {
+        "target": {
+            "type": "parameter",
+            "datatype": "choice",
+            "defaultValue": "all",
+            "choices": [
+                {
+                    "choice": "all"
+                },
+                {
+                    "choice": "deploy"
+                }
+            ]
+        },
+        "linux-x64": {
+            "type": "parameter",
+            "datatype": "bool",
+            "defaultValue": "true"
+        },
+        "windows-nano": {
+            "type": "parameter",
+            "datatype": "bool",
+            "defaultValue": "true"
+        },
+        "skipRestore": {
+            "type": "parameter",
+            "datatype": "bool",
+            "defaultValue": "false"
+        }
+    },
+    "sources": [
+        {
+            "exclude": [
+                ".template.config/*",
+                "Docker/**/*",
+                "bin/**/*",
+                "obj/**/*"
+            ],
+            "modifiers": [
+                {
+                    "condition": "(windows-nano && target != 'deploy')",
+                    "include": [
+                        "Docker/windows-nano/*"
+                    ]
+                },
+                {
+                    "condition": "(linux-x64 && target != 'deploy')",
+                    "include": [
+                        "Docker/linux-x64/*"
+                    ]
+                },
+                {
+                    "condition": "(target == 'deploy')",
+                    "exclude": [
+                        "*.cs", "*.csproj", ".gitignore"
+                    ]
+                }
+            ]
+        }
+    ],
+    "postActions": [
+        {
+            "condition": "(!skipRestore && target != 'deploy')",
+            "description": "Restore NuGet packages required by this project.",
+            "manualInstructions": [
+                {
+                    "text": "Run 'dotnet restore'"
+                }
+            ],
+            "actionId": "210D431B-A78B-4D2F-B762-4ED3E3EA9025",
+            "continueOnError": true
+        }
+    ]
+}

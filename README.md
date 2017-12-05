@@ -20,7 +20,7 @@ Templates                                         Short Name              Langua
 ---------------------------------------------------------------------------------------------------------------
 Console Application                               console                 [C#], F#, VB      Common/Console
 Class library                                     classlib                [C#], F#, VB      Common/Library
-Azure IoT Edge Module                             aziotedgemodule         [C#]              Console
+Azure IoT Edge Module                             aziotedgemodule         [C#], F#          Console
 Contoso Sample 06                                 sample06                [C#], F#          Console
 Unit Test Project                                 mstest                  [C#], F#, VB      Test/MSTest
 xUnit Test Project                                xunit                   [C#], F#, VB      Test/xUnit
@@ -76,6 +76,10 @@ Options:
                       bool - Optional
                       Default: false
 
+  -lang|--language
+                      string - Optional
+                      Default: C#
+
 ```
 
 Parameter `-t` means you if want all Azure IoT Edge module files or just a deployment.json file.
@@ -89,3 +93,9 @@ Now create the Azure IoT Edge module by the template with name:
 ```
 dotnet new aziotedgemodule -n <your_module_name>
 ```
+
+Optionally, to create an F# module use the `-lang` or `--language` flag as follows:
+
+```
+dotnet new aziotedgemodule -lang F# -n <your_module_name>
+``` 
