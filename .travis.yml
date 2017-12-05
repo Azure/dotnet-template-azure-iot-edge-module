@@ -1,11 +1,15 @@
 language: csharp
 dotnet: 2.0.2
+before_install:
+  - mkdir -p .nuget
+  - wget -O .nuget/nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+  - mono .nuget/nuget.exe
 script:
 - dotnet test Test/Test.csproj
 deploy:
   provider: script
   skip_cleanup: true
-  script: nuget update -self && nuget pack -NoDefaultExcludes && nuget push *.nupkg $api_key -Source https://www.nuget.org/api/v2/package
+  script: mono .nuget/nuget.exe pack -NoDefaultExcludes && mono .nuget/nuget.exe push *.nupkg $api_key -Source https://www.nuget.org/api/v2/package
   on:
     branch: master
     tags: true
