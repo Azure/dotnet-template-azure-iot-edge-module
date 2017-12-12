@@ -77,7 +77,7 @@
                 {
                     "condition": "(target == 'deploy')",
                     "exclude": [
-                        "*.cs", "*.csproj", ".gitignore"
+                        "*.fs", "*.fsproj", ".gitignore"
                     ]
                 }
             ]
