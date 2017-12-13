@@ -9,7 +9,7 @@ namespace Test
 {
     public class DotNetFixture : IDisposable
     {
-        private static string RelativeTemplatePath = @"../../../../content/dotnet-template-azure-iot-edge-module/CSharp/";
+        private static string RelativeTemplatePath = @"../../../../content/dotnet-template-azure-iot-edge-module/";
         public DotNetFixture()
         {
             Process.Start("dotnet", "new -i " + RelativeTemplatePath).WaitForExit();
@@ -30,6 +30,8 @@ namespace Test
         private DotNetFixture fixture;
         private const string TargetAll = "all";
         private const string TargetDeploy = "deploy";
+        private const string CSharp = "C#";
+        private const string FSharp = "F#";
         private const string ArchLinux64 = "linux64";
         private const string ArchWindowsNano = "windowsNano";
 
@@ -60,35 +62,58 @@ namespace Test
             }
         };
 
-        private static string BeforeEach(string target = TargetAll, bool linux64 = true, bool windowsNano = true, bool skipRestore = false)
+        private static string BeforeEach(string lang, string target, bool linux64 = true, bool windowsNano = true, bool skipRestore = false)
         {
             var scaffoldName = Path.GetRandomFileName().Replace(".", "").ToString();
-            FlagFilesMapping[TargetAll] = new List<string> {scaffoldName + ".csproj", "Program.cs", ".gitignore"};
-            var command = "new aziotedgemodule -n " + scaffoldName + " -t " + target + " -lx " + linux64 + " -wn " + windowsNano + " -s " + skipRestore;
+            if(lang == CSharp)
+            {
+                FlagFilesMapping[TargetAll] = new List<string> {scaffoldName + ".csproj", "Program.cs", ".gitignore"};
+            }
+            if(lang == FSharp)
+            {
+                FlagFilesMapping[TargetAll] = new List<string> {scaffoldName + ".fsproj", "Program.fs", ".gitignore"};
+            }
+            var command = "new aziotedgemodule -n " + scaffoldName + " -lang " + lang + " -t " + target + " -lx " + linux64 + " -wn " + windowsNano + " -s " + skipRestore;
             Process.Start("dotnet", command).WaitForExit();
             return scaffoldName;
         }
 
         [Theory]
-        [InlineData(TargetAll, true, true, true)]
-        [InlineData(TargetAll, true, true, false)]
-        [InlineData(TargetAll, true, false, true)]
-        [InlineData(TargetAll, true, false, false)]
-        [InlineData(TargetAll, false, true, true)]
-        [InlineData(TargetAll, false, true, false)]
-        [InlineData(TargetAll, false, false, true)]
-        [InlineData(TargetAll, false, false, false)]
-        [InlineData(TargetDeploy, true, true, true)]
-        [InlineData(TargetDeploy, true, true, false)]
-        [InlineData(TargetDeploy, true, false, true)]
-        [InlineData(TargetDeploy, true, false, false)]
-        [InlineData(TargetDeploy, false, true, true)]
-        [InlineData(TargetDeploy, false, true, false)]
-        [InlineData(TargetDeploy, false, false, true)]
-        [InlineData(TargetDeploy, false, false, false)]
-        public void TestArchitecture(string target, bool linux64, bool windowsNano, bool skipRestore)
+        [InlineData(CSharp, TargetAll, true, true, true)]
+        [InlineData(CSharp, TargetAll, true, true, false)]
+        [InlineData(CSharp, TargetAll, true, false, true)]
+        [InlineData(CSharp, TargetAll, true, false, false)]
+        [InlineData(CSharp, TargetAll, false, true, true)]
+        [InlineData(CSharp, TargetAll, false, true, false)]
+        [InlineData(CSharp, TargetAll, false, false, true)]
+        [InlineData(CSharp, TargetAll, false, false, false)]
+        [InlineData(CSharp, TargetDeploy, true, true, true)]
+        [InlineData(CSharp, TargetDeploy, true, true, false)]
+        [InlineData(CSharp, TargetDeploy, true, false, true)]
+        [InlineData(CSharp, TargetDeploy, true, false, false)]
+        [InlineData(CSharp, TargetDeploy, false, true, true)]
+        [InlineData(CSharp, TargetDeploy, false, true, false)]
+        [InlineData(CSharp, TargetDeploy, false, false, true)]
+        [InlineData(CSharp, TargetDeploy, false, false, false)]
+        [InlineData(FSharp, TargetAll, true, true, true)]
+        [InlineData(FSharp, TargetAll, true, true, false)]
+        [InlineData(FSharp, TargetAll, true, false, true)]
+        [InlineData(FSharp, TargetAll, true, false, false)]
+        [InlineData(FSharp, TargetAll, false, true, true)]
+        [InlineData(FSharp, TargetAll, false, true, false)]
+        [InlineData(FSharp, TargetAll, false, false, true)]
+        [InlineData(FSharp, TargetAll, false, false, false)]
+        [InlineData(FSharp, TargetDeploy, true, true, true)]
+        [InlineData(FSharp, TargetDeploy, true, true, false)]
+        [InlineData(FSharp, TargetDeploy, true, false, true)]
+        [InlineData(FSharp, TargetDeploy, true, false, false)]
+        [InlineData(FSharp, TargetDeploy, false, true, true)]
+        [InlineData(FSharp, TargetDeploy, false, true, false)]
+        [InlineData(FSharp, TargetDeploy, false, false, true)]
+        [InlineData(FSharp, TargetDeploy, false, false, false)]
+        public void TestArchitecture(string lang, string target, bool linux64, bool windowsNano, bool skipRestore)
         {
-            var scaffoldName = BeforeEach(target, linux64, windowsNano, skipRestore);            
+            var scaffoldName = BeforeEach(lang, target, linux64, windowsNano, skipRestore);            
             var filesToCheck = new List<string>();
             if(target == TargetDeploy)
             {
@@ -125,10 +150,12 @@ namespace Test
             Directory.Delete(scaffoldName, true);
         }
 
-        [Fact]
-        public void TestDeployUnnecessaryFiles()
+        [Theory]
+        [InlineData(CSharp)]
+        [InlineData(FSharp)]
+        public void TestDeployUnnecessaryFiles(string lang)
         {
-            var scaffoldName = BeforeEach(TargetDeploy);
+            var scaffoldName = BeforeEach(lang, TargetDeploy);
             var filesExistsToCheck = FlagFilesMapping[TargetDeploy];
             var filesNonExistsToCheck = FlagFilesMapping[ArchLinux64].Union(FlagFilesMapping[ArchWindowsNano]).Union(FlagFilesMapping[TargetAll]);
 
