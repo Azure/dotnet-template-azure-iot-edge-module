@@ -19,11 +19,6 @@
         }
     ],
     "symbols": {
-        "name": {
-            "type": "parameter",
-            "datatype": "string",
-            "replaces": "SampleModuleName"
-        },
         "target": {
             "type": "parameter",
             "datatype": "choice",

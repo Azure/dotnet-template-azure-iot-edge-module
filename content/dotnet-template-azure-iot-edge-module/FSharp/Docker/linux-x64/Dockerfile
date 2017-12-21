@@ -6,4 +6,4 @@ WORKDIR /app
 
 COPY $EXE_DIR/ ./
 
-CMD ["dotnet", "SampleModuleName.dll"]
+CMD ["dotnet", "SampleModule.dll"]
