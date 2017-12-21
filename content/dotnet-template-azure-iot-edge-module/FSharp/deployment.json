@@ -29,7 +29,7 @@
           }
         },
         "modules": {
-          "SampleModuleName": {
+          "SampleModule": {
             "version": "1.0",
             "type": "docker",
             "status": "running",
