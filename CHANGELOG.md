@@ -3,7 +3,7 @@
 * [Added] Add support to scaffold Azure IoT Edge Custom Module in FSharp
 
 ### 1.1.0 (2017-12-06)
-* [Fixed] docker image hint in deployment.json is not clear engou
+* [Fixed] docker image hint in deployment.json is not clear enough
 
 ### 1.0.0 (2017-11-15)
 * [Added] Add support to scaffold Azure IoT Edge Custom Module in CSharp
