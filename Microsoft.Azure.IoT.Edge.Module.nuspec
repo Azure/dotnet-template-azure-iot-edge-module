@@ -11,6 +11,7 @@
     <language>en-US</language>
     <projectUrl>http://github.com/azure/dotnet-template-azure-iot-edge-module/</projectUrl>
     <licenseUrl>https://github.com/Azure/dotnet-template-azure-iot-edge-module/blob/master/LICENSE</licenseUrl>
+    <iconUrl>http://go.microsoft.com/fwlink/?LinkID=288890</iconUrl>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <tags>azure iot edge dotnet template</tags>
     </metadata>
