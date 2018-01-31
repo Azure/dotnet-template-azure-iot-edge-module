@@ -19,19 +19,6 @@
         }
     ],
     "symbols": {
-        "target": {
-            "type": "parameter",
-            "datatype": "choice",
-            "defaultValue": "all",
-            "choices": [
-                {
-                    "choice": "all"
-                },
-                {
-                    "choice": "deploy"
-                }
-            ]
-        },
         "linux-x64": {
             "type": "parameter",
             "datatype": "bool",
@@ -46,33 +33,32 @@
             "type": "parameter",
             "datatype": "bool",
             "defaultValue": "false"
+        },
+        "repository": {
+            "type": "parameter",
+            "defaultValue": "<registry>/<image>",
+            "replaces": "<repository>"
         }
     },
     "sources": [
         {
             "exclude": [
                 ".template.config/*",
-                "Docker/**/*",
                 "bin/**/*",
-                "obj/**/*"
+                "obj/**/*",
+                "Dockerfile*"
             ],
             "modifiers": [
                 {
-                    "condition": "(windows-nano && target != 'deploy')",
+                    "condition": "(windows-nano || linux-x64)",
                     "include": [
-                        "Docker/windows-nano/*"
+                        "Dockerfile"
                     ]
                 },
                 {
-                    "condition": "(linux-x64 && target != 'deploy')",
+                    "condition": "(linux-x64)",
                     "include": [
-                        "Docker/linux-x64/*"
-                    ]
-                },
-                {
-                    "condition": "(target == 'deploy')",
-                    "exclude": [
-                        "*.fs", "*.fsproj", ".gitignore"
+                        "Dockerfile.amd64.debug"
                     ]
                 }
             ]
@@ -80,7 +66,7 @@
     ],
     "postActions": [
         {
-            "condition": "(!skipRestore && target != 'deploy')",
+            "condition": "(!skipRestore)",
             "description": "Restore NuGet packages required by this project.",
             "manualInstructions": [
                 {

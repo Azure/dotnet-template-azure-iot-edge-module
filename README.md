@@ -59,11 +59,6 @@ Options:
 Azure IoT Edge Module (C#)
 Author: Summer Sun
 Options:
-  -t|--target
-                          all
-                          deploy
-                      Default: all
-
   -lx|--linux-x64
                       bool - Optional
                       Default: true
@@ -75,6 +70,10 @@ Options:
   -s|--skipRestore
                       bool - Optional
                       Default: false
+  
+  -r|--repository
+                      string - Optional
+                      Default: <registry>/<image> 
 
   -lang|--language
                       string - Optional
@@ -82,11 +81,11 @@ Options:
 
 ```
 
-Parameter `-t` means you if want all Azure IoT Edge module files or just a deployment.json file.
-
 Parameter `-lx` means you if want Dockerfile for linux-x64 or not. So does the `-wn` for windows-nano.
 
 Parameter `-s` means if you want to skip the restore of packages referenced in module project.
+
+Parameter `-r` means the Docker repository to host your Azure IoT Edge module.
 
 Now create the Azure IoT Edge module by the template with name:
 
