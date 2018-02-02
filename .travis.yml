@@ -1,5 +1,6 @@
 language: csharp
 dotnet: 2.0.2
+mono: alpha
 before_install:
   - mkdir -p .nuget
   - wget -O .nuget/nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe

@@ -28,8 +28,6 @@ namespace Test
     public class Test : IClassFixture<DotNetFixture>
     {
         private DotNetFixture fixture;
-        private const string TargetAll = "all";
-        private const string TargetDeploy = "deploy";
         private const string CSharp = "C#";
         private const string FSharp = "F#";
         private const string ArchLinux64 = "linux64";
@@ -42,132 +40,85 @@ namespace Test
 
         public static Dictionary<string, List<string>> FlagFilesMapping = new Dictionary<string, List<string>>{
             {
-                TargetAll, new List<string>()
-            },
-            {
-                TargetDeploy, new List<string> {
-                    "deployment.json"
-                }
-            },
-            {
                 ArchLinux64, new List<string> {
-                    "Docker/linux-x64/Dockerfile",
-                    "Docker/linux-x64/Dockerfile.debug"
+                    "Dockerfile",
+                    "Dockerfile.amd64.debug"
                 }
             },
             {
                 ArchWindowsNano, new List<string> {
-                    "Docker/windows-nano/Dockerfile"
+                    "Dockerfile"
                 }
             }
         };
 
-        private static string BeforeEach(string lang, string target, bool linux64 = true, bool windowsNano = true, bool skipRestore = false)
+        private static string BeforeEach(string lang, string repository, bool linux64 = true, bool windowsNano = true, bool skipRestore = false)
         {
             var scaffoldName = Path.GetRandomFileName().Replace(".", "").ToString();
-            if(lang == CSharp)
-            {
-                FlagFilesMapping[TargetAll] = new List<string> {scaffoldName + ".csproj", "Program.cs", ".gitignore"};
-            }
-            if(lang == FSharp)
-            {
-                FlagFilesMapping[TargetAll] = new List<string> {scaffoldName + ".fsproj", "Program.fs", ".gitignore"};
-            }
-            var command = "new aziotedgemodule -n " + scaffoldName + " -lang " + lang + " -t " + target + " -lx " + linux64 + " -wn " + windowsNano + " -s " + skipRestore;
+            var command = "new aziotedgemodule -n " + scaffoldName + " -lang " + lang + " -lx " + linux64 + " -wn " + windowsNano + " -s " + skipRestore + " -r " + repository;
             Process.Start("dotnet", command).WaitForExit();
             return scaffoldName;
         }
 
         [Theory]
-        [InlineData(CSharp, TargetAll, true, true, true)]
-        [InlineData(CSharp, TargetAll, true, true, false)]
-        [InlineData(CSharp, TargetAll, true, false, true)]
-        [InlineData(CSharp, TargetAll, true, false, false)]
-        [InlineData(CSharp, TargetAll, false, true, true)]
-        [InlineData(CSharp, TargetAll, false, true, false)]
-        [InlineData(CSharp, TargetAll, false, false, true)]
-        [InlineData(CSharp, TargetAll, false, false, false)]
-        [InlineData(CSharp, TargetDeploy, true, true, true)]
-        [InlineData(CSharp, TargetDeploy, true, true, false)]
-        [InlineData(CSharp, TargetDeploy, true, false, true)]
-        [InlineData(CSharp, TargetDeploy, true, false, false)]
-        [InlineData(CSharp, TargetDeploy, false, true, true)]
-        [InlineData(CSharp, TargetDeploy, false, true, false)]
-        [InlineData(CSharp, TargetDeploy, false, false, true)]
-        [InlineData(CSharp, TargetDeploy, false, false, false)]
-        [InlineData(FSharp, TargetAll, true, true, true)]
-        [InlineData(FSharp, TargetAll, true, true, false)]
-        [InlineData(FSharp, TargetAll, true, false, true)]
-        [InlineData(FSharp, TargetAll, true, false, false)]
-        [InlineData(FSharp, TargetAll, false, true, true)]
-        [InlineData(FSharp, TargetAll, false, true, false)]
-        [InlineData(FSharp, TargetAll, false, false, true)]
-        [InlineData(FSharp, TargetAll, false, false, false)]
-        [InlineData(FSharp, TargetDeploy, true, true, true)]
-        [InlineData(FSharp, TargetDeploy, true, true, false)]
-        [InlineData(FSharp, TargetDeploy, true, false, true)]
-        [InlineData(FSharp, TargetDeploy, true, false, false)]
-        [InlineData(FSharp, TargetDeploy, false, true, true)]
-        [InlineData(FSharp, TargetDeploy, false, true, false)]
-        [InlineData(FSharp, TargetDeploy, false, false, true)]
-        [InlineData(FSharp, TargetDeploy, false, false, false)]
-        public void TestArchitecture(string lang, string target, bool linux64, bool windowsNano, bool skipRestore)
+        [InlineData(CSharp, true, true, true)]
+        [InlineData(CSharp, true, true, false)]
+        [InlineData(CSharp, true, false, true)]
+        [InlineData(CSharp, true, false, false)]
+        [InlineData(CSharp, false, true, true)]
+        [InlineData(CSharp, false, true, false)]
+        [InlineData(CSharp, false, false, true)]
+        [InlineData(CSharp, false, false, false)]
+        [InlineData(FSharp, true, true, true)]
+        [InlineData(FSharp, true, true, false)]
+        [InlineData(FSharp, true, false, true)]
+        [InlineData(FSharp, true, false, false)]
+        [InlineData(FSharp, false, true, true)]
+        [InlineData(FSharp, false, true, false)]
+        [InlineData(FSharp, false, false, true)]
+        [InlineData(FSharp, false, false, false)]
+        public void TestArchitecture(string lang, bool linux64, bool windowsNano, bool skipRestore)
         {
-            var scaffoldName = BeforeEach(lang, target, linux64, windowsNano, skipRestore);            
-            var filesToCheck = new List<string>();
-            if(target == TargetDeploy)
+            var repository = "test.azurecr.io/test";
+            var scaffoldName = BeforeEach(lang, repository, linux64, windowsNano, skipRestore);
+            var filesToCheck = new List<string> { ".gitignore", "module.json" };
+
+            if (skipRestore)
             {
-                filesToCheck = FlagFilesMapping[TargetDeploy];
+                Assert.True(!Directory.Exists(Path.Combine(scaffoldName, "obj")));
             }
-            else if (target == TargetAll)
+            else
             {
-                if(skipRestore)
-                {
-                    Assert.True(!Directory.Exists(Path.Combine(scaffoldName, "obj")));
-                }
-                else
-                {
-                    Assert.True(Directory.Exists(Path.Combine(scaffoldName, "obj")));
-                }
+                Assert.True(Directory.Exists(Path.Combine(scaffoldName, "obj")));
+            }
 
-                filesToCheck = FlagFilesMapping[TargetDeploy].Union(FlagFilesMapping[TargetAll]).ToList();
-                
-                if (linux64)
-                {
-                    filesToCheck.AddRange(FlagFilesMapping[ArchLinux64]);
+            if (lang == CSharp)
+            {
+                filesToCheck.AddRange(new List<string> { "Program.cs", scaffoldName + ".csproj" });
+            }
+            if (lang == FSharp)
+            {
+                filesToCheck.AddRange(new List<string> { "Program.fs", scaffoldName + ".fsproj" });
+            }
 
-                }
-                if (windowsNano)
-                {
-                    filesToCheck.AddRange(FlagFilesMapping[ArchWindowsNano]);
-                }
+            if (linux64)
+            {
+                filesToCheck.AddRange(FlagFilesMapping[ArchLinux64]);
+
+            }
+            if (windowsNano)
+            {
+                filesToCheck.AddRange(FlagFilesMapping[ArchWindowsNano]);
             }
 
             foreach (var file in filesToCheck)
             {
                 Assert.True(File.Exists(Path.Combine(scaffoldName, file)));
             }
-            Directory.Delete(scaffoldName, true);
-        }
 
-        [Theory]
-        [InlineData(CSharp)]
-        [InlineData(FSharp)]
-        public void TestDeployUnnecessaryFiles(string lang)
-        {
-            var scaffoldName = BeforeEach(lang, TargetDeploy);
-            var filesExistsToCheck = FlagFilesMapping[TargetDeploy];
-            var filesNonExistsToCheck = FlagFilesMapping[ArchLinux64].Union(FlagFilesMapping[ArchWindowsNano]).Union(FlagFilesMapping[TargetAll]);
+            string text = File.ReadAllText(Path.Combine(scaffoldName, "module.json"));
+            Assert.Contains(repository, text);
 
-            foreach (var file in filesExistsToCheck)
-            {
-                Assert.True(File.Exists(Path.Combine(scaffoldName, file)));
-            }
-            foreach (var file in filesNonExistsToCheck)
-            {
-                Assert.True(!File.Exists(Path.Combine(scaffoldName, file)));
-            }
-            Assert.True(!Directory.Exists(Path.Combine(scaffoldName, "obj")));
             Directory.Delete(scaffoldName, true);
         }
     }
