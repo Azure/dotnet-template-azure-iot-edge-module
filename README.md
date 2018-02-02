@@ -73,7 +73,7 @@ Options:
   
   -r|--repository
                       string - Optional
-                      Default: <registry>/<image> 
+                      Default: <registry>/<repo-name> 
 
   -lang|--language
                       string - Optional
