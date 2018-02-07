@@ -1,7 +1,7 @@
 FROM microsoft/dotnet:2.0-sdk AS build-env
 WORKDIR /app
 
-COPY *.csproj ./
+COPY *.fsproj ./
 RUN dotnet restore
 
 COPY . ./
