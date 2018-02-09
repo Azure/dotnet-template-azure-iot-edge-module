@@ -19,16 +19,6 @@
         }
     ],
     "symbols": {
-        "linux-x64": {
-            "type": "parameter",
-            "datatype": "bool",
-            "defaultValue": "true"
-        },
-        "windows-nano": {
-            "type": "parameter",
-            "datatype": "bool",
-            "defaultValue": "true"
-        },
         "skipRestore": {
             "type": "parameter",
             "datatype": "bool",
@@ -45,22 +35,7 @@
             "exclude": [
                 ".template.config/*",
                 "bin/**/*",
-                "obj/**/*",
-                "Dockerfile*"
-            ],
-            "modifiers": [
-                {
-                    "condition": "(windows-nano || linux-x64)",
-                    "include": [
-                        "Dockerfile"
-                    ]
-                },
-                {
-                    "condition": "(linux-x64)",
-                    "include": [
-                        "Dockerfile.amd64.debug"
-                    ]
-                }
+                "obj/**/*"
             ]
         }
     ],

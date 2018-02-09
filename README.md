@@ -59,14 +59,6 @@ Options:
 Azure IoT Edge Module (C#)
 Author: Summer Sun
 Options:
-  -lx|--linux-x64
-                      bool - Optional
-                      Default: true
-
-  -wn|--windows-nano
-                      bool - Optional
-                      Default: true
-
   -s|--skipRestore
                       bool - Optional
                       Default: false
@@ -80,8 +72,6 @@ Options:
                       Default: C#
 
 ```
-
-Parameter `-lx` means you if want Dockerfile for linux-x64 or not. So does the `-wn` for windows-nano.
 
 Parameter `-s` means if you want to skip the restore of packages referenced in module project.
 
