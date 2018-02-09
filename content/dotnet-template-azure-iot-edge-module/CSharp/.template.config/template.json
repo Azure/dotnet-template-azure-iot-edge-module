@@ -46,7 +46,8 @@
                 ".template.config/*",
                 "bin/**/*",
                 "obj/**/*",
-                "Dockerfile*"
+                "Dockerfile*",
+                "Dockerfile"
             ],
             "modifiers": [
                 {
