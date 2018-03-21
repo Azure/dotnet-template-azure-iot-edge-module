@@ -29,3 +29,6 @@ artifacts/
 *.svclog
 *.scc
 .vs
+
+[Bb]in/
+[Oo]bj/
