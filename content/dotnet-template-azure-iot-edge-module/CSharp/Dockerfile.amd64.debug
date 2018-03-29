@@ -1,3 +1,10 @@
+FROM microsoft/dotnet:2.0-runtime-stretch AS base
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends unzip procps && \
+    curl -sSL https://aka.ms/getvsdbgsh | bash /dev/stdin -v latest -l ~/vsdbg && \
+    rm -rf /var/lib/apt/lists/*
+
 FROM microsoft/dotnet:2.0-sdk AS build-env
 WORKDIR /app
 
@@ -7,12 +14,8 @@ RUN dotnet restore
 COPY . ./
 RUN dotnet publish -c Debug -o out
 
-FROM microsoft/dotnet:2.0-runtime-stretch
+FROM base
 WORKDIR /app
 COPY --from=build-env /app/out ./
-
-RUN apt-get update
-RUN apt-get install -y unzip procps
-RUN curl -sSL https://aka.ms/getvsdbgsh | bash /dev/stdin -v latest -l ~/vsdbg
 
 ENTRYPOINT ["dotnet", "SampleModule.dll"]
