@@ -11,7 +11,8 @@
                 "arm32v7": "./Dockerfile.arm32v7",
                 "windows-amd64": "./Dockerfile"
             }
-        }
+        },
+        "buildOptions": []
     },
     "language": "fsharp"
 }
