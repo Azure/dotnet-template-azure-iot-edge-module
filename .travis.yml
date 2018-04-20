@@ -7,10 +7,21 @@ before_install:
   - mono .nuget/nuget.exe
 script:
 - dotnet test Test/Test.csproj
+- mono .nuget/nuget.exe pack -NoDefaultExcludes
 deploy:
-  provider: script
+- provider: releases
   skip_cleanup: true
-  script: mono .nuget/nuget.exe pack -NoDefaultExcludes && mono .nuget/nuget.exe push *.nupkg $api_key -Source https://www.nuget.org/api/v2/package
+  api_key: "$git_token"
+  file_glob: true
+  file: "*.nupkg"
   on:
-    branch: master
     tags: true
+- provider: script
+  skip_cleanup: true
+  script: mono .nuget/nuget.exe push *.nupkg $api_key -Source https://www.nuget.org/api/v2/package
+  on:
+    tags: true
+    condition: "$TRAVIS_TAG =~ $ISPRODTAG"
+env:
+  global:
+  - ISPRODTAG=^v?[0-9]+\.[0-9]+\.[0-9]+$
