@@ -15,21 +15,21 @@ namespace SampleModule
     {
         static int counter;
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             // The Edge runtime gives us the connection string we need -- it is injected as an environment variable
-            string connectionString = Environment.GetEnvironmentVariable("EdgeHubConnectionString");
+            var connectionString = Environment.GetEnvironmentVariable("EdgeHubConnectionString");
 
             // Cert verification is not yet fully functional when using Windows OS for the container
-            bool bypassCertVerification = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+            var bypassCertVerification = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
             if (!bypassCertVerification) InstallCert();
-            Init(connectionString, bypassCertVerification).Wait();
+            await Init(connectionString, bypassCertVerification);
 
             // Wait until the app unloads or is cancelled
             var cts = new CancellationTokenSource();
             AssemblyLoadContext.Default.Unloading += (ctx) => cts.Cancel();
             Console.CancelKeyPress += (sender, cpe) => cts.Cancel();
-            WhenCancelled(cts.Token).Wait();
+            await WhenCancelled(cts.Token);
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace SampleModule
         /// </summary>
         static void InstallCert()
         {
-            string certPath = Environment.GetEnvironmentVariable("EdgeModuleCACertificateFile");
+            var certPath = Environment.GetEnvironmentVariable("EdgeModuleCACertificateFile");
             if (string.IsNullOrWhiteSpace(certPath))
             {
                 // We cannot proceed further without a proper cert file
@@ -60,7 +60,7 @@ namespace SampleModule
                 Console.WriteLine($"Missing path to certificate collection file: {certPath}");
                 throw new InvalidOperationException("Missing certificate file.");
             }
-            X509Store store = new X509Store(StoreName.Root, StoreLocation.CurrentUser);
+            var store = new X509Store(StoreName.Root, StoreLocation.CurrentUser);
             store.Open(OpenFlags.ReadWrite);
             store.Add(new X509Certificate2(X509Certificate2.CreateFromCertFile(certPath)));
             Console.WriteLine("Added Cert: " + certPath);
@@ -76,7 +76,7 @@ namespace SampleModule
         {
             Console.WriteLine("Connection String {0}", connectionString);
 
-            MqttTransportSettings mqttSetting = new MqttTransportSettings(TransportType.Mqtt_Tcp_Only);
+            var mqttSetting = new MqttTransportSettings(TransportType.Mqtt_Tcp_Only);
             // During dev you might want to bypass the cert verification. It is highly recommended to verify certs systematically in production
             if (bypassCertVerification)
             {
@@ -85,7 +85,7 @@ namespace SampleModule
             ITransportSettings[] settings = { mqttSetting };
 
             // Open a connection to the Edge runtime
-            DeviceClient ioTHubModuleClient = DeviceClient.CreateFromConnectionString(connectionString, settings);
+            var ioTHubModuleClient = DeviceClient.CreateFromConnectionString(connectionString, settings);
             await ioTHubModuleClient.OpenAsync();
             Console.WriteLine("IoT Hub module client initialized.");
 
@@ -108,8 +108,8 @@ namespace SampleModule
                 throw new InvalidOperationException("UserContext doesn't contain " + "expected values");
             }
 
-            byte[] messageBytes = message.GetBytes();
-            string messageString = Encoding.UTF8.GetString(messageBytes);
+            var messageBytes = message.GetBytes();
+            var messageString = Encoding.UTF8.GetString(messageBytes);
             Console.WriteLine($"Received message: {counterValue}, Body: [{messageString}]");
 
             if (!string.IsNullOrEmpty(messageString))
