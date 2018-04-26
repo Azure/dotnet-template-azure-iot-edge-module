@@ -11,7 +11,7 @@ namespace SampleModule
     using Microsoft.Azure.Devices.Client;
     using Microsoft.Azure.Devices.Client.Transport.Mqtt;
 
-    class Program
+    public class Program
     {
         static int counter;
 
