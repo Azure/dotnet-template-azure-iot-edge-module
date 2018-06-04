@@ -17,10 +17,7 @@ namespace SampleModule
 
         static void Main(string[] args)
         {
-            // Cert verification is not yet fully functional when using Windows OS for the container
-            bool bypassCertVerification = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-            if (!bypassCertVerification) InstallCert();
-            Init(bypassCertVerification).Wait();
+            Init().Wait();
 
             // Wait until the app unloads or is cancelled
             var cts = new CancellationTokenSource();
@@ -40,43 +37,12 @@ namespace SampleModule
         }
 
         /// <summary>
-        /// Add certificate in local cert store for use by client for secure connection to IoT Edge runtime
-        /// </summary>
-        static void InstallCert()
-        {
-            string certPath = Environment.GetEnvironmentVariable("EdgeModuleCACertificateFile");
-            if (string.IsNullOrWhiteSpace(certPath))
-            {
-                // We cannot proceed further without a proper cert file
-                Console.WriteLine($"Missing path to certificate collection file: {certPath}");
-                throw new InvalidOperationException("Missing path to certificate file.");
-            }
-            else if (!File.Exists(certPath))
-            {
-                // We cannot proceed further without a proper cert file
-                Console.WriteLine($"Missing path to certificate collection file: {certPath}");
-                throw new InvalidOperationException("Missing certificate file.");
-            }
-            X509Store store = new X509Store(StoreName.Root, StoreLocation.CurrentUser);
-            store.Open(OpenFlags.ReadWrite);
-            store.Add(new X509Certificate2(X509Certificate2.CreateFromCertFile(certPath)));
-            Console.WriteLine("Added Cert: " + certPath);
-            store.Close();
-        }
-
-
-        /// <summary>
         /// Initializes the DeviceClient and sets up the callback to receive
         /// messages containing temperature information
         /// </summary>
-        static async Task Init(bool bypassCertVerification = false)
+        static async Task Init()
         {
             MqttTransportSettings mqttSetting = new MqttTransportSettings(TransportType.Mqtt_Tcp_Only);
-            // During dev you might want to bypass the cert verification. It is highly recommended to verify certs systematically in production
-            if (bypassCertVerification)
-            {
-                mqttSetting.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
-            }
             ITransportSettings[] settings = { mqttSetting };
 
             // Open a connection to the Edge runtime
