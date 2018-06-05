@@ -37,7 +37,7 @@ namespace SampleModule
         }
 
         /// <summary>
-        /// Initializes the DeviceClient and sets up the callback to receive
+        /// Initializes the ModuleClient and sets up the callback to receive
         /// messages containing temperature information
         /// </summary>
         static async Task Init()
