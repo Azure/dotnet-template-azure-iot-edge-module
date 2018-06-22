@@ -57,7 +57,7 @@ Options:
 
 
 Azure IoT Edge Module (C#)
-Author: Summer Sun
+Author: Microsoft
 Options:
   -s|--skipRestore
                       bool - Optional
