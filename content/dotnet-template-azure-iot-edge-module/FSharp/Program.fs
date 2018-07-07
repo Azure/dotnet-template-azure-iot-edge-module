@@ -1,7 +1,6 @@
 ﻿namespace SampleModule
 
 open System
-open System.Runtime.InteropServices
 open System.Runtime.Loader
 open System.Text
 open System.Threading
@@ -40,15 +39,10 @@ module SampleModule =
         
         Task.FromResult (MessageResponse.Completed)
 
-    let Init (connectionString:string) (bypassCertVerification:bool) =
+    let Init =
         async {
-            printfn "Connection String %s" connectionString
 
             let mqttSetting = MqttTransportSettings(TransportType.Mqtt_Tcp_Only)
-            // During dev you might want to bypass the cert verification. 
-            // It is highly recommended to verify certs systematically in production
-            if bypassCertVerification then
-                mqttSetting.RemoteCertificateValidationCallback <- (fun _ _ _ _ -> true) 
             let transportSettings = mqttSetting :> ITransportSettings
             let settings = [|transportSettings|] 
 
@@ -56,8 +50,6 @@ module SampleModule =
             let! ioTHubModuleClient = 
                 ModuleClient.CreateFromEnvironmentAsync(settings)
                 |> Async.AwaitTask 
-                ////|> Async.
-                //|> Async.Start
 
             ioTHubModuleClient.OpenAsync() 
             |> Async.AwaitTask 
@@ -83,11 +75,8 @@ module SampleModule =
 
     [<EntryPoint>]
     let main _ =
-        let connectionString = Environment.GetEnvironmentVariable("EdgeHubConnectionString")
 
-        // Cert verification is not yet fully functional when using Windows OS for the container
-        let bypassCertVerification = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
-        Init connectionString bypassCertVerification |> Async.RunSynchronously
+        Init |> Async.RunSynchronously
 
         // Wait until the app unloads or is cancelled
         let cts = new CancellationTokenSource()
