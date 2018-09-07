@@ -2,7 +2,7 @@
 <package>
     <metadata>
     <id>Microsoft.Azure.IoT.Edge.Module</id>
-    <version>2.2.0-rc</version>
+    <version>2.2.0-rc1</version>
     <title>Azure IoT Edge Module</title>
     <authors>Microsoft</authors>
     <owners>microsoft, nugetazureiotedge</owners>
