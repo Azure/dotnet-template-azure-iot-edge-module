@@ -1,3 +1,24 @@
+### 2.2.0 (2018-09-11)
+* [Updated] Update Microsoft.Azure.Devices.Client dependency to 1.18.0 for CSharp Template
+* [Updated] Update target framework to dotnet 2.1
+
+### 2.1.0 (2018-07-26)
+* [Updated] Update the sample code to use amqp instead of mqtt
+
+### 2.0.0 (2018-06-27)
+* [Updated] Update Microsoft.Azure.Devices.Client dependency to 1.17.0 for CSharp Template
+* [Updated] Update the sample code to use module client instead of device client
+
+### 1.4.0 (2018-04-27)
+* [Updated] Use unprivileged user in amd64 and amd32v7 Dockerfiles
+
+### 1.3.1 (2018-03-29)
+* [Updated] Cache vsdbg in first layer in Docker file to speed up docker image rebuild time.
+
+### 1.3.0 (2018-03-27)
+* [Updated] Update folder structure to put docker files under project root
+* [Added] Add module.json file into project root
+
 ### 1.2.0 (2017-12-22)
 * [Fixed] Users get no hint with building Windows image against Docker Linux container
 * [Added] Add support to scaffold Azure IoT Edge Custom Module in FSharp
