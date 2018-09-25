@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
+  <TemplateData>
+    <Name>Azure IoT Edge Module</Name>
+    <Description>Azure IoT Edge Module</Description>
+    <Icon>IoTEdgeModule.ico</Icon>
+    <ProjectType>CSharp</ProjectType>
+    <ProjectSubType>.NET Core</ProjectSubType>
+    <TemplateGroupID>.NET Core</TemplateGroupID>
+    <RequiredFrameworkVersion>2.1</RequiredFrameworkVersion>
+    <SortOrder>1000</SortOrder>
+    <TemplateID>4a2d0fd4-d4e0-4871-a4fa-455c81dbef2d</TemplateID>
+    <CreateNewFolder>true</CreateNewFolder>
+    <CreateInPlace>true</CreateInPlace>
+    <DefaultName>SampleModule</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <NumberOfParentCategoriesToRollUp>2</NumberOfParentCategoriesToRollUp>
+    <Hidden>true</Hidden>
+  </TemplateData>
+  <TemplateContent>
+    <Project File="SampleModule.csproj" ReplaceParameters="true">
+      <ProjectItem ReplaceParameters="true" >Program.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true" >Dockerfile.amd64</ProjectItem>
+      <ProjectItem ReplaceParameters="true" >Dockerfile.amd64.debug</ProjectItem>
+      <ProjectItem ReplaceParameters="true" >Dockerfile.windows-amd64</ProjectItem>
+      <ProjectItem ReplaceParameters="true" >module.json</ProjectItem>
+      <ProjectItem>.gitignore</ProjectItem>
+    </Project>
+  </TemplateContent>
+</VSTemplate>
