@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2042
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureIoTEdge.ModuleTemplate", "AzureIoTEdge.ModuleTemplate.csproj", "{AF00DA12-96AF-43E4-A137-C9F291B13E1C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A712543C-0DB9-455D-BE90-3897DD86888A}"
+	ProjectSection(SolutionItems) = preProject
+		..\.gitignore = ..\.gitignore
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AF00DA12-96AF-43E4-A137-C9F291B13E1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF00DA12-96AF-43E4-A137-C9F291B13E1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF00DA12-96AF-43E4-A137-C9F291B13E1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF00DA12-96AF-43E4-A137-C9F291B13E1C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {675F51FD-0A48-41D3-AE8C-53D261DC7017}
+	EndGlobalSection
+EndGlobal

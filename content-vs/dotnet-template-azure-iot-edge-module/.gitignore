@@ -1,0 +1,9 @@
+# Ignore the following files which are copied from ROOT/content/dotnet-template-azure-iot-edge-module/CSharp
+
+CSharp/Dockerfile*
+CSharp/Program.cs
+CSharp/SampleModule.csproj
+CSharp/.gitignore
+
+# vs temp files
+**/*.user
