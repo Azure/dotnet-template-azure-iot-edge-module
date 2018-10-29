@@ -1,5 +1,5 @@
 ### 2.3.0 (2018-10-29)
-* [Added] Add context path in module.json
+* [Added] Add contextPath in module.json
 * [Added] Add AzureIoTEdgeModule project capability for csproj
 * [Updated] Use 1.* for Microsoft.Azure.Devices.Client
 
