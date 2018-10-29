@@ -1,3 +1,8 @@
+### 2.3.0 (2018-10-29)
+* [Added] Add contextPath in module.json
+* [Added] Add AzureIoTEdgeModule project capability for csproj
+* [Updated] Use 1.* for Microsoft.Azure.Devices.Client
+
 ### 2.2.0 (2018-09-11)
 * [Updated] Update Microsoft.Azure.Devices.Client dependency to 1.18.0 for CSharp Template
 * [Updated] Update target framework to dotnet 2.1
