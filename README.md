@@ -1,4 +1,7 @@
 # dotnet-template-azure-iot-edge-module
+
+[![Nuget](https://img.shields.io/nuget/v/Microsoft.Azure.IoT.Edge.Module.svg)](https://www.nuget.org/packages/Microsoft.Azure.IoT.Edge.Module/)
+
 > dotnet template to do scaffolding for Azure IoT Edge module development.
 
 This README will introduce how to install the dotnet template and then create Azure IoT Edge module with the template step by step.

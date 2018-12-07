@@ -1,3 +1,7 @@
+# Changelog
+
+[![Nuget](https://img.shields.io/nuget/v/Microsoft.Azure.IoT.Edge.Module.svg)](https://www.nuget.org/packages/Microsoft.Azure.IoT.Edge.Module/)
+
 ### 2.3.0 (2018-10-29)
 * [Added] Add contextPath in module.json
 * [Added] Add AzureIoTEdgeModule project capability for csproj
