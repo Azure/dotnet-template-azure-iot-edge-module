@@ -1,3 +1,7 @@
+# Changelog
+
+[![Nuget](https://img.shields.io/nuget/v/Microsoft.Azure.IoT.Edge.Module.svg)](https://www.nuget.org/packages/Microsoft.Azure.IoT.Edge.Module/)
+
 ### 2.3.0 (2018-10-29)
 * [Added] Add contextPath in module.json
 * [Added] Add AzureIoTEdgeModule project capability for csproj
@@ -31,7 +35,7 @@
 ### 1.1.0 (2017-12-06)
 * [Fixed] Docker image hint in deployment.json is not clear enough
 
-### 1.0.0 (2017-11-15)
+### 1.0.1 (2017-11-15)
 * [Added] Add support to scaffold Azure IoT Edge Custom Module in CSharp
 * [Added] Add support to scaffold only Azure IoT Edge deployment manifest
 * [Added] Add support to scaffold targeting only linux-x64 or windows-nano architecture
