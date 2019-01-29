@@ -41,7 +41,7 @@ namespace Test
         private static string BeforeEach(string lang, string repository, bool skipRestore = false)
         {
             var scaffoldName = Path.GetRandomFileName().Replace(".", "").ToString();
-            var command = "new aziotedgemodule -n " + scaffoldName + " -lang " + lang  + " -s " + skipRestore + " -r " + repository;
+            var command = "new aziotedgemodule -n " + scaffoldName + " -lang " + lang + " -s " + skipRestore + " -r " + repository;
             Process.Start("dotnet", command).WaitForExit();
             return scaffoldName;
         }
@@ -55,7 +55,7 @@ namespace Test
         {
             var repository = "test.azurecr.io/test";
             var scaffoldName = BeforeEach(lang, repository, skipRestore);
-            var filesToCheck = new List<string> { ".gitignore", "module.json", "Dockerfile.amd64", "Dockerfile.windows-amd64", "Dockerfile.amd64.debug", "Dockerfile.arm32v7" };
+            var filesToCheck = new List<string> { ".gitignore", "module.json", "Dockerfile.amd64", "Dockerfile.amd64.debug", "Dockerfile.arm32v7", "Dockerfile.arm32v7.debug", "Dockerfile.windows-amd64" };
 
             if (skipRestore)
             {
