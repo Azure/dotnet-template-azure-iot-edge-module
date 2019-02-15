@@ -2,6 +2,9 @@
 
 [![Nuget](https://img.shields.io/nuget/v/Microsoft.Azure.IoT.Edge.Module.svg)](https://www.nuget.org/packages/Microsoft.Azure.IoT.Edge.Module/)
 
+### 2.5.0 (2019-02-XX)
+* [Added] Add arm32v7.debug dockerfile
+
 ### 2.4.0 (2018-12-18)
 * [Updated] Update Windows base image for Windows 10 Version 1809
 * [Updated] Switch back to MQTT as default transport
