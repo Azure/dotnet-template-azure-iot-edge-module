@@ -2,7 +2,7 @@
 
 [![Nuget](https://img.shields.io/nuget/v/Microsoft.Azure.IoT.Edge.Module.svg)](https://www.nuget.org/packages/Microsoft.Azure.IoT.Edge.Module/)
 
-### 2.5.0 (2019-02-XX)
+### 2.5.0 (2019-03-05)
 * [Added] Add arm32v7.debug dockerfile
 
 ### 2.4.0 (2018-12-18)
