@@ -2,6 +2,10 @@
 
 [![Nuget](https://img.shields.io/nuget/v/Microsoft.Azure.IoT.Edge.Module.svg)](https://www.nuget.org/packages/Microsoft.Azure.IoT.Edge.Module/)
 
+### 3.0.0-alpha (2019-07-17)
+* [Added] Add arm64v8 dockerfile
+* [Updated] Update target framework to dotnet 3.0
+
 ### 2.5.0 (2019-03-05)
 * [Added] Add arm32v7.debug dockerfile
 
