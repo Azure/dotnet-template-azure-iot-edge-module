@@ -1,5 +1,5 @@
 language: csharp
-dotnet: 2.1
+dotnet: 3.0
 mono: alpha
 before_install:
   - mkdir -p .nuget
