@@ -2,6 +2,12 @@
 
 [![Nuget](https://img.shields.io/nuget/v/Microsoft.Azure.IoT.Edge.Module.svg)](https://www.nuget.org/packages/Microsoft.Azure.IoT.Edge.Module/)
 
+### 2.7.0 (2019-12-20)
+* [Updated] Pull base image from Microsoft Container Registry
+
+### 2.6.0 (2019-11-01)
+* [Added] Add .dockerignore to ignore bin and obj folder
+
 ### 2.5.0 (2019-03-05)
 * [Added] Add arm32v7.debug dockerfile
 
