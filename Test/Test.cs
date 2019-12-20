@@ -68,7 +68,7 @@ namespace Test
 
             if (lang == CSharp)
             {
-                filesToCheck.AddRange(new List<string> { "Program.cs", scaffoldName + ".csproj" });
+                filesToCheck.AddRange(new List<string> { "Program.cs", scaffoldName + ".csproj", "Dockerfile.arm64v8.debug" });
             }
             if (lang == FSharp)
             {
