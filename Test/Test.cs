@@ -55,7 +55,7 @@ namespace Test
         {
             var repository = "test.azurecr.io/test";
             var scaffoldName = BeforeEach(lang, repository, skipRestore);
-            var filesToCheck = new List<string> { ".gitignore", "module.json", "Dockerfile.amd64", "Dockerfile.amd64.debug", "Dockerfile.arm32v7", "Dockerfile.arm32v7.debug", "Dockerfile.windows-amd64", "Dockerfile.arm64v8" };
+            var filesToCheck = new List<string> { ".gitignore", "module.json", "Dockerfile.amd64", "Dockerfile.amd64.debug", "Dockerfile.arm32v7", "Dockerfile.arm32v7.debug", "Dockerfile.windows-amd64", "Dockerfile.arm64v8", ".dockerignore" };
 
             if (skipRestore)
             {

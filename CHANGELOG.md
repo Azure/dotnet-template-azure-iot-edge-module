@@ -5,6 +5,12 @@
 ### 3.1.0-alpha (2019-12-24)
 * [Added] Add arm64v8.debug dockerfile
 
+### 2.7.0 (2019-12-20)
+* [Updated] Pull base image from Microsoft Container Registry
+
+### 2.6.0 (2019-11-01)
+* [Added] Add .dockerignore to ignore bin and obj folder
+
 ### 3.0.0-alpha (2019-07-17)
 * [Added] Add arm64v8 dockerfile
 * [Updated] Update target framework to dotnet 3.0
