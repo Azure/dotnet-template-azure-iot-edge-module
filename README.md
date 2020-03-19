@@ -9,7 +9,7 @@ The template will set up all necessary files for you to focus on functionality p
 
 ## Get Started
 
-Make sure you have [.Net Core 2.0 SDK](https://www.microsoft.com/net/download/core) installed.
+Make sure you have [.Net Core 3.0 SDK](https://dotnet.microsoft.com/download/dotnet-core/3.0) installed.
 
 Run `dotnet` command to install the template:
 
