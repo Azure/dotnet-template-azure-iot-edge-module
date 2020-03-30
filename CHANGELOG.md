@@ -2,6 +2,10 @@
 
 [![Nuget](https://img.shields.io/nuget/v/Microsoft.Azure.IoT.Edge.Module.svg)](https://www.nuget.org/packages/Microsoft.Azure.IoT.Edge.Module/)
 
+### 3.1.0
+* [Updated] Add arm64v8 and arm64v8.debug dockerfiles
+* [Updated] Upgrade .Net Core SDK to 3.1
+
 ### 2.7.0 (2019-12-20)
 * [Updated] Pull base image from Microsoft Container Registry
 
