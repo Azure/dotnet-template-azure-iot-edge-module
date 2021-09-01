@@ -2,6 +2,9 @@
 
 [![Nuget](https://img.shields.io/nuget/v/Microsoft.Azure.IoT.Edge.Module.svg)](https://www.nuget.org/packages/Microsoft.Azure.IoT.Edge.Module/)
 
+### 3.1.1 (2021-09-01)
+* [Updated] Updated the nuget template json to match the schema
+
 ### 3.1.0 (2020-04-07)
 * [Updated] Add arm64v8 and arm64v8.debug dockerfiles
 * [Updated] Upgrade .Net Core SDK to 3.1
