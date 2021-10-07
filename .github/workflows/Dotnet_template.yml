@@ -20,7 +20,7 @@ jobs:
       run: >-
         wget -O .nuget/nuget.exe
         https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
-    - name: Install Nugget
+    - name: Install Nuget
       run: mono .nuget/nuget.exe
     - name: dotnet test
       run: dotnet test Test/Test.csproj
