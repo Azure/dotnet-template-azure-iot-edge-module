@@ -17,14 +17,14 @@ jobs:
     - uses: actions/checkout@v2
     - run: mkdir -p .nuget
     - name: Download nuget
-      run: >-
+      run:
         wget -O .nuget/nuget.exe
         https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
     - name: Install Nuget
       run: mono .nuget/nuget.exe
     - name: dotnet test
       run: dotnet test Test/Test.csproj
-    - name: nuget packag  
+    - name: nuget package  
       run: mono .nuget/nuget.exe pack -NoDefaultExcludes
     - name: GitHub Release
       if: |
