@@ -1,0 +1,38 @@
+name: CI
+on: 
+  push:
+    branches:
+      - master
+    tags:
+      - v*.*.*
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  dotnet-template-azure-iot-edge-module:
+   name: dotnet-template-azure-iot-edge-module
+   runs-on: ubuntu-latest
+   steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-dotnet@v1
+      with:
+          dotnet-version: '3.1'
+    - run: mkdir -p .nuget
+    - name: Download nuget
+      run:
+        wget -O .nuget/nuget.exe
+        https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+    - name: Install Nuget
+      run: mono .nuget/nuget.exe
+    - name: dotnet test
+      run: dotnet test Test/Test.csproj
+    - name: nuget package  
+      run: mono .nuget/nuget.exe pack -NoDefaultExcludes
+    - name: GitHub Release
+      if: |
+         (success() &&
+         startsWith(github.ref, 'refs/tags/'))
+      uses: softprops/action-gh-release@v1
+      with:
+          files: ./**/*.nupkg
