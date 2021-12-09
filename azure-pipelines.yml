@@ -1,0 +1,25 @@
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: NuGetToolInstaller@1
+  inputs:
+    versionSpec: 
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: 'Test/Test.csproj'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'pack'
+    packagesToPack: 'Test/Test.csproj'
+    versioningScheme: 'off'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.SourceDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+
