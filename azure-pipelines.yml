@@ -11,15 +11,15 @@ steps:
     command: 'test'
     projects: 'Test/Test.csproj'
 
-- task: DotNetCoreCLI@2
+- task: NuGetCommand@2
   inputs:
     command: 'pack'
-    packagesToPack: 'Test/Test.csproj'
+    packagesToPack: 'Microsoft.Azure.IoT.Edge.Module.nuspec'
     versioningScheme: 'off'
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.SourcesDirectory)'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
