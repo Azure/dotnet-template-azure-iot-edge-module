@@ -40,5 +40,4 @@ steps:
     tagSource: 'manual'
     tag: '$(Build.SourceBranch)'
     releaseNotesSource: 'input'
-    isPreRelease: true
     addChangeLog: false
