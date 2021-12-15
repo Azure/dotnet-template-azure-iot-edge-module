@@ -1,3 +1,10 @@
+pr:
+  - master
+trigger:
+  branches:
+    include:
+    - master
+    - refs/tags/v*
 pool:
   vmImage: ubuntu-latest
 
