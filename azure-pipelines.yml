@@ -30,14 +30,15 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
-- task: GitHubRelease@1
+- task: GitHubRelease@0
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
   inputs:
     gitHubConnection: 'github.com_marianan-DotNet'
     repositoryName: '$(Build.Repository.Name)'
     action: 'create'
     target: '$(Build.SourceVersion)'
-    tagSource: 'userSpecifiedTag'
+    tagSource: 'manual'
     tag: '$(Build.SourceBranch)'
     changeLogCompareToRelease: 'lastFullRelease'
+    isPreRelease: true
     changeLogType: 'commitBased'
