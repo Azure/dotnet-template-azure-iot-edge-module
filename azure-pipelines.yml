@@ -30,6 +30,32 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
+- task: EsrpCodeSigning@1
+  inputs:
+    ConnectedServiceName: 'IoT Edge NuGet Sign - DDE'
+    FolderPath: '$(Build.ArtifactStagingDirectory)'
+    Pattern: '*.nupkg'
+    signConfigType: 'inlineSignParams'
+    inlineOperation: |
+      [ 
+          {
+              "keyCode": "CP-401405",
+              "operationSetCode": "NuGetSign",
+              "parameters": [ ],
+              "toolName": "sign",
+              "toolVersion": "1.0"
+          },
+          {
+              "keyCode": "CP-401405",
+              "operationSetCode": "NuGetVerify",
+              "parameters": [ ],
+              "toolName": "sign",
+              "toolVersion": "1.0"
+          }
+      ]
+    SessionTimeout: '20'
+    MaxConcurrency: '50'
+    MaxRetryAttempts: '5'
 - task: GitHubRelease@0
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
   inputs:
