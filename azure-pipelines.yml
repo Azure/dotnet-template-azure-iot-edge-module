@@ -68,3 +68,20 @@ steps:
     releaseNotesSource: 'input'
     isPreRelease: false
     addChangeLog: false
+#Your build pipeline references an undefined variable named ‘api_key’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+
+- task: PowerShell@1
+  displayName: 'PowerShell Script'
+  inputs:
+    scriptType: 'inlineScript'
+    arguments: '-apikey $(api_key)'
+    workingFolder: '$(Build.ArtifactStagingDirectory)'
+    inlineScript: |
+      param($apikey)
+      echo $env:BUILD_SOURCEBRANCH
+      if ($env:BUILD_SOURCEBRANCH -match "^refs/tags/v?[0-9]+\.[0-9]+\.[0-9]+$") {
+          echo "starting NuGet Push"
+          nuget push *.nupkg $apikey -Source https://api.nuget.org/v3/index.json
+      } else {
+          echo "skipping NuGet Push"
+      }
