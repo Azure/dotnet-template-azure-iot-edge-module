@@ -68,7 +68,6 @@ steps:
     releaseNotesSource: 'input'
     isPreRelease: false
     addChangeLog: false
-#Your build pipeline references an undefined variable named ‘api_key’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
 
 - task: PowerShell@1
   displayName: 'PowerShell Script'
