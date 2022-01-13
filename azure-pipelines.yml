@@ -5,8 +5,11 @@ trigger:
     include:
     - master
     - refs/tags/v*
+
 pool:
-  vmImage: ubuntu-latest
+  name: Azure-IoT-EdgeExperience-1ES-Hosted-Linux
+  demands:
+    - ImageOverride -equals MMSUbuntu18.04TLS
 
 steps:
 - task: NuGetToolInstaller@1
@@ -23,6 +26,11 @@ steps:
     command: 'pack'
     packagesToPack: 'Microsoft.Azure.IoT.Edge.Module.nuspec'
     versioningScheme: 'off'
+
+- task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
+  displayName: 'SBOM Generation Task'
+  inputs:
+    BuildDropPath: '$(Build.ArtifactStagingDirectory)'
 
 - task: PublishBuildArtifacts@1
   inputs:
