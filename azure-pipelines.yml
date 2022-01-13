@@ -31,6 +31,33 @@ steps:
   displayName: 'SBOM Generation Task'
   inputs:
     BuildDropPath: '$(Build.ArtifactStagingDirectory)'
+    
+- task: EsrpCodeSigning@1
+  inputs:
+    ConnectedServiceName: 'IoT Edge NuGet Sign - DDE'
+    FolderPath: '$(Build.ArtifactStagingDirectory)'
+    Pattern: '*.nupkg'
+    signConfigType: 'inlineSignParams'
+    inlineOperation: |
+      [ 
+          {
+              "keyCode": "CP-401405",
+              "operationSetCode": "NuGetSign",
+              "parameters": [ ],
+              "toolName": "sign",
+              "toolVersion": "1.0"
+          },
+          {
+              "keyCode": "CP-401405",
+              "operationSetCode": "NuGetVerify",
+              "parameters": [ ],
+              "toolName": "sign",
+              "toolVersion": "1.0"
+          }
+      ]
+    SessionTimeout: '20'
+    MaxConcurrency: '50'
+    MaxRetryAttempts: '5'    
 
 - task: PublishBuildArtifacts@1
   inputs:
@@ -50,3 +77,19 @@ steps:
     releaseNotesSource: 'input'
     isPreRelease: false
     addChangeLog: false
+    
+- task: PowerShell@1
+  displayName: 'PowerShell Script'
+  inputs:
+    scriptType: 'inlineScript'
+    arguments: '-apikey $(api_key)'
+    workingFolder: '$(Build.ArtifactStagingDirectory)'
+    inlineScript: |
+      param($apikey)
+      echo $env:BUILD_SOURCEBRANCH
+      if ($env:BUILD_SOURCEBRANCH -match "^refs/tags/v?[0-9]+\.[0-9]+\.[0-9]+$") {
+          echo "starting NuGet Push"
+          nuget push *.nupkg $apikey -Source https://api.nuget.org/v3/index.json
+      } else {
+          echo "skipping NuGet Push"
+      }    
