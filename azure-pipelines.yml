@@ -77,7 +77,7 @@ steps:
     releaseNotesSource: 'input'
     isPreRelease: false
     addChangeLog: false
-    
+
 - task: PowerShell@1
   displayName: 'PowerShell Script'
   inputs:
