@@ -76,7 +76,7 @@ steps:
     tagSource: 'manual'
     tag: '$(Build.SourceBranch)'
     releaseNotesSource: 'input'
-    isPreRelease: false
+    assets: '$(Build.ArtifactStagingDirectory)/Package/*.nupkg'
     addChangeLog: false
 
 - task: Bash@3
