@@ -34,7 +34,7 @@ steps:
     
 - task: EsrpCodeSigning@1
   inputs:
-    ConnectedServiceName: 'IoT Edge NuGet Sign - DDE'
+    ConnectedServiceName: 'Templates-Azure-IoT-Edge Sign'
     FolderPath: '$(Build.ArtifactStagingDirectory)'
     Pattern: '*.nupkg'
     signConfigType: 'inlineSignParams'
@@ -57,7 +57,7 @@ steps:
       ]
     SessionTimeout: '20'
     MaxConcurrency: '50'
-    MaxRetryAttempts: '5'    
+    MaxRetryAttempts: '5'
 
 - task: PublishBuildArtifacts@1
   inputs:
@@ -78,18 +78,16 @@ steps:
     isPreRelease: false
     addChangeLog: false
 
-- task: PowerShell@1
-  displayName: 'PowerShell Script'
+- task: Bash@3
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  displayName: "nuget Publishing"
   inputs:
-    scriptType: 'inlineScript'
-    arguments: '-apikey $(api_key)'
-    workingFolder: '$(Build.ArtifactStagingDirectory)'
-    inlineScript: |
-      param($apikey)
-      echo $env:BUILD_SOURCEBRANCH
-      if ($env:BUILD_SOURCEBRANCH -match "^refs/tags/v?[0-9]+\.[0-9]+\.[0-9]+$") {
+    targetType: 'inline'
+    script: |
+      echo $(Build.SourceBranch) 
+      if [[ $(Build.SourceBranch) =~ ^refs/tags/v?[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
           echo "starting NuGet Push"
-          nuget push *.nupkg $apikey -Source https://api.nuget.org/v3/index.json
-      } else {
+          # nuget push *.nupkg ($apikey) -Source https://api.nuget.org/v3/index.json
+      else
           echo "skipping NuGet Push"
-      }    
+      fi
