@@ -88,7 +88,7 @@ steps:
       echo $(Build.SourceBranch) 
       if [[ $(Build.SourceBranch) =~ ^refs/tags/v?[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
           echo "starting NuGet Push"
-          # nuget push *.nupkg ($apikey) -Source https://api.nuget.org/v3/index.json
+          nuget push *.nupkg ($apikey) -Source https://api.nuget.org/v3/index.json
       else
           echo "skipping NuGet Push"
       fi
