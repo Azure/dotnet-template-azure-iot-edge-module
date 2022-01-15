@@ -31,7 +31,7 @@ steps:
 - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
   displayName: 'SBOM Generation Task'
   inputs:
-    BuildDropPath: '$(Build.ArtifactStagingDirectory)'
+    BuildDropPath: '$(Build.ArtifactStagingDirectory)/Package'
     
 - task: EsrpCodeSigning@1
   inputs:
