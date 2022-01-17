@@ -92,3 +92,4 @@ steps:
       else
           echo "skipping NuGet Push"
       fi
+    workingDirectory: '$(Build.ArtifactStagingDirectory)/Package'
