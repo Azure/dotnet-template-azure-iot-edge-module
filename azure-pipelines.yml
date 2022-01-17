@@ -7,9 +7,10 @@ trigger:
     - refs/tags/v*
 
 pool:
-  name: Azure-IoT-EdgeExperience-1ES-Hosted-Linux
-  demands:
-    - ImageOverride -equals MMSUbuntu18.04TLS
+  vmImage: ubuntu-latest
+  # name: Azure-IoT-EdgeExperience-1ES-Hosted-Linux
+  # demands:
+  #   - ImageOverride -equals MMSUbuntu18.04TLS
 
 steps:
 - task: NuGetToolInstaller@1
@@ -28,10 +29,10 @@ steps:
     packDestination: '$(Build.ArtifactStagingDirectory)/Package'
     versioningScheme: 'off'
 
-- task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
-  displayName: 'SBOM Generation Task'
-  inputs:
-    BuildDropPath: '$(Build.ArtifactStagingDirectory)/Package'
+# - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
+#   displayName: 'SBOM Generation Task'
+#   inputs:
+#     BuildDropPath: '$(Build.ArtifactStagingDirectory)/Package'
     
 - task: EsrpCodeSigning@1
   inputs:
@@ -88,7 +89,7 @@ steps:
       echo $(Build.SourceBranch) 
       if [[ $(Build.SourceBranch) =~ ^refs/tags/v?[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
           echo "starting NuGet Push"
-          nuget push *.nupkg ($apikey) -Source https://api.nuget.org/v3/index.json
+          nuget push *.nupkg $(apikey) -Source https://api.nuget.org/v3/index.json
       else
           echo "skipping NuGet Push"
       fi
