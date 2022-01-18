@@ -25,12 +25,40 @@ steps:
   inputs:
     command: 'pack'
     packagesToPack: 'Microsoft.Azure.IoT.Edge.Module.nuspec'
+    packDestination: '$(Build.ArtifactStagingDirectory)'
     versioningScheme: 'off'
 
 - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
   displayName: 'SBOM Generation Task'
   inputs:
     BuildDropPath: '$(Build.ArtifactStagingDirectory)'
+    
+- task: EsrpCodeSigning@1
+  inputs:
+    ConnectedServiceName: 'Templates-Azure-IoT-Edge Sign'
+    FolderPath: '$(Build.ArtifactStagingDirectory)'
+    Pattern: '*.nupkg'
+    signConfigType: 'inlineSignParams'
+    inlineOperation: |
+      [ 
+          {
+              "keyCode": "CP-401405",
+              "operationSetCode": "NuGetSign",
+              "parameters": [ ],
+              "toolName": "sign",
+              "toolVersion": "1.0"
+          },
+          {
+              "keyCode": "CP-401405",
+              "operationSetCode": "NuGetVerify",
+              "parameters": [ ],
+              "toolName": "sign",
+              "toolVersion": "1.0"
+          }
+      ]
+    SessionTimeout: '20'
+    MaxConcurrency: '50'
+    MaxRetryAttempts: '5'
 
 - task: PublishBuildArtifacts@1
   inputs:
@@ -48,5 +76,20 @@ steps:
     tagSource: 'manual'
     tag: '$(Build.SourceBranch)'
     releaseNotesSource: 'input'
-    isPreRelease: false
+    assets: '$(Build.ArtifactStagingDirectory)/*.nupkg'
     addChangeLog: false
+
+- task: Bash@3
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  displayName: "nuget Publishing"
+  inputs:
+    targetType: 'inline'
+    script: |
+      echo $(Build.SourceBranch) 
+      if [[ $(Build.SourceBranch) =~ ^refs/tags/v?[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "starting NuGet Push"
+          nuget push *.nupkg $(apikey) -Source https://api.nuget.org/v3/index.json
+      else
+          echo "skipping NuGet Push"
+      fi
+    workingDirectory: '$(Build.ArtifactStagingDirectory)'
