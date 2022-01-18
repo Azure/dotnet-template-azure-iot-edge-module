@@ -25,18 +25,18 @@ steps:
   inputs:
     command: 'pack'
     packagesToPack: 'Microsoft.Azure.IoT.Edge.Module.nuspec'
-    packDestination: '$(Build.ArtifactStagingDirectory)/Package'
+    packDestination: '$(Build.ArtifactStagingDirectory)'
     versioningScheme: 'off'
 
 - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
   displayName: 'SBOM Generation Task'
   inputs:
-    BuildDropPath: '$(Build.ArtifactStagingDirectory)/Package'
+    BuildDropPath: '$(Build.ArtifactStagingDirectory)'
     
 - task: EsrpCodeSigning@1
   inputs:
     ConnectedServiceName: 'Templates-Azure-IoT-Edge Sign'
-    FolderPath: '$(Build.ArtifactStagingDirectory)/Package'
+    FolderPath: '$(Build.ArtifactStagingDirectory)'
     Pattern: '*.nupkg'
     signConfigType: 'inlineSignParams'
     inlineOperation: |
@@ -76,7 +76,7 @@ steps:
     tagSource: 'manual'
     tag: '$(Build.SourceBranch)'
     releaseNotesSource: 'input'
-    assets: '$(Build.ArtifactStagingDirectory)/Package/*.nupkg'
+    assets: '$(Build.ArtifactStagingDirectory)/*.nupkg'
     addChangeLog: false
 
 - task: Bash@3
@@ -92,4 +92,4 @@ steps:
       else
           echo "skipping NuGet Push"
       fi
-    workingDirectory: '$(Build.ArtifactStagingDirectory)/Package'
+    workingDirectory: '$(Build.ArtifactStagingDirectory)'
