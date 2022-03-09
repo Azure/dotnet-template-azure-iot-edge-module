@@ -40,7 +40,6 @@ steps:
       if [[ $(Build.SourceBranch) =~ ^refs/tags/v?[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
       echo "##vso[task.setvariable variable=NUGET_PUBLISH_FLAG;]true"
       fi
-        
 - task: EsrpCodeSigning@1
   inputs:
     ConnectedServiceName: 'Templates-Azure-IoT-Edge Sign'
@@ -67,16 +66,16 @@ steps:
     SessionTimeout: '20'
     MaxConcurrency: '50'
     MaxRetryAttempts: '5'
-
+    
 - task: PowerShell@2
   condition: and(succeeded(), eq(variables['NUGET_PUBLISH_FLAG'], 'true'))
   inputs:
     targetType: 'inline'
     script: |
-      $PACKAGEVERSION = $([xml]$(Get-Content $Microsoft.Azure.IoT.Edge.Module.nuspec) | ForEach-Object package).metadata.version;
+      $PACKAGEVERSION = $([xml]$(Get-Content Microsoft.Azure.IoT.Edge.Module.nuspec) | ForEach-Object package).metadata.version;
       Write-Host "##vso[task.setvariable variable=PACKAGEVERSION;]$PACKAGEVERSION"
     pwsh: true
-  
+
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
@@ -94,23 +93,7 @@ steps:
     tag: '$(Build.SourceBranch)'
     releaseNotesSource: 'input'
     assets: '$(Build.ArtifactStagingDirectory)/*.nupkg'
-    isPreRelease: true
     addChangeLog: false
-
-# - task: Bash@3
-#   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
-#   displayName: "nuget Publishing"
-#   inputs:
-#     targetType: 'inline'
-#     script: |
-#       echo $(Build.SourceBranch) 
-#       if [[ $(Build.SourceBranch) =~ ^refs/tags/v?[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-#           echo "starting NuGet Push"
-#           nuget push *.nupkg $(apikey) -Source https://api.nuget.org/v3/index.json
-#       else
-#           echo "skipping NuGet Push"
-#       fi
-#     workingDirectory: '$(Build.ArtifactStagingDirectory)'
 
 - task: Bash@3
   condition: and(succeeded(), eq(variables['NUGET_PUBLISH_FLAG'], 'true'))
@@ -121,23 +104,13 @@ steps:
       tar -xvf downloadazcopy-v10-linux
       sudo cp ./azcopy_linux_amd64_*/azcopy /usr/bin/
 
-# - task: Bash@3
-#   displayName: 'Uplaod to Blob'
-#   condition: and(succeeded(), eq(variables['NUGET_PUBLISH_FLAG'], 'true'))
-#   inputs:
-#     targetType: 'inline'
-#     script: |
-#       export AZCOPY_SPA_CLIENT_SECRET=$(AZURESDKPARTNERDROPS-SERVICE-PRINCIPAL-KEY)
-#       azcopy login --service-principal --application-id $(APPID)
-#       azcopy copy "$(Build.SourcesDirectory)/generator-azure-iot-edge-module-$(PACKAGEVERSION).tgz"  "https://azuresdkpartnerdrops.blob.core.windows.net/drops/azureiotedge/npm/$(PACKAGEVERSION)/generator-azure-iot-edge-module-$(PACKAGEVERSION).tgz"
-
 - task: Bash@3
   displayName: 'Uplaod to Blob'
   condition: and(succeeded(), eq(variables['NUGET_PUBLISH_FLAG'], 'true'))
   inputs:
     targetType: 'inline'
     script: |
-      export AZCOPY_SPA_CLIENT_SECRET=$(TEST-CLIENT-SECRET)
-      azcopy login --service-principal --application-id $(TEST_APPID)
-      azcopy copy "$(Build.SourcesDirectory)/Microsoft.Azure.IoT.Edge.Module-$(PACKAGEVERSION).nupkg"  "https://sadevicelabsetup.blob.core.windows.net/test/azureiotedge/module/$(PACKAGEVERSION)
-
+      export AZCOPY_SPA_CLIENT_SECRET=$(AZURESDKPARTNERDROPS-SERVICE-PRINCIPAL-KEY)
+      azcopy login --service-principal --application-id $(APPID)
+      azcopy copy "$(Build.ArtifactStagingDirectory)/Microsoft.Azure.IoT.Edge.Module.$(PACKAGEVERSION).nupkg"  "https://azuresdkpartnerdrops.blob.core.windows.net/drops/azure-iot-edge/dotnet/$(PACKAGEVERSION)/Microsoft.Azure.IoT.Edge.Module.$(PACKAGEVERSION).nupkg"
+      
