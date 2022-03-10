@@ -93,6 +93,7 @@ steps:
     tag: '$(Build.SourceBranch)'
     releaseNotesSource: 'input'
     assets: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+    isPreRelease: true
     addChangeLog: false
 
 - task: Bash@3
@@ -110,7 +111,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      export AZCOPY_SPA_CLIENT_SECRET=$(AZURESDKPARTNERDROPS-SERVICE-PRINCIPAL-KEY)
+      export AZCOPY_SPA_CLIENT_SECRET=$(AZURESDKPARTNERDROPS-SERVICE-PRINCIPAL-KEY)*
       azcopy login --service-principal --application-id $(APPID)
       azcopy copy "$(Build.ArtifactStagingDirectory)/Microsoft.Azure.IoT.Edge.Module.$(PACKAGEVERSION).nupkg"  "https://azuresdkpartnerdrops.blob.core.windows.net/drops/azure-iot-edge-tools-templates-module/dotnet/$(PACKAGEVERSION)/Microsoft.Azure.IoT.Edge.Module.$(PACKAGEVERSION).nupkg"
       
