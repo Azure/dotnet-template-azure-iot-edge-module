@@ -112,5 +112,5 @@ steps:
     script: |
       export AZCOPY_SPA_CLIENT_SECRET=$(AZURESDKPARTNERDROPS-SERVICE-PRINCIPAL-KEY)
       azcopy login --service-principal --application-id $(APPID)
-      azcopy copy "$(Build.ArtifactStagingDirectory)/Microsoft.Azure.IoT.Edge.Module.$(PACKAGEVERSION).nupkg"  "https://azuresdkpartnerdrops.blob.core.windows.net/drops/azure-iot-edge/dotnet/$(PACKAGEVERSION)/Microsoft.Azure.IoT.Edge.Module.$(PACKAGEVERSION).nupkg"
+      azcopy copy "$(Build.ArtifactStagingDirectory)/Microsoft.Azure.IoT.Edge.Module.$(PACKAGEVERSION).nupkg"  "https://azuresdkpartnerdrops.blob.core.windows.net/drops/azure-iot-edge-tools-templates-module/dotnet/$(PACKAGEVERSION)/Microsoft.Azure.IoT.Edge.Module.$(PACKAGEVERSION).nupkg"
       
