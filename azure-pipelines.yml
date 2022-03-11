@@ -106,7 +106,7 @@ steps:
       sudo cp ./azcopy_linux_amd64_*/azcopy /usr/bin/
 
 - task: Bash@3
-  displayName: 'Uplaod to Blob'
+  displayName: 'Upload to Blob'
   condition: and(succeeded(), eq(variables['NUGET_PUBLISH_FLAG'], 'true'))
   inputs:
     targetType: 'inline'
