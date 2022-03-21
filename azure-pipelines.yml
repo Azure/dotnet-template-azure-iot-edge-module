@@ -23,7 +23,6 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'custom'
-    projects: 'Test/Test.csproj'
     custom: '--version'
 
 - task: DotNetCoreCLI@2
