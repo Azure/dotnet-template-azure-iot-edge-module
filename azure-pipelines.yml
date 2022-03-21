@@ -15,6 +15,16 @@ steps:
 - task: NuGetToolInstaller@1
   inputs:
     versionSpec: 
+- task: UseDotNet@2
+  inputs:
+    version: '3.1.x'
+    packageType: runtime
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'custom'
+    projects: 'Test/Test.csproj'
+    custom: '--version'
 
 - task: DotNetCoreCLI@2
   inputs:
