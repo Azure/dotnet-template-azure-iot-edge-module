@@ -12,10 +12,10 @@
         "type": "project"
     },
     "sourceName": "SampleModule",
-    "preferNameDirectory": "true",
+    "preferNameDirectory": true,
     "primaryOutputs": [
         {
-            "path": ""
+            "path": "."
         }
     ],
     "symbols": {
