@@ -7,6 +7,7 @@ namespace SampleModule;
 internal class ModuleBackgroundService : BackgroundService
 {
     private int _counter;
+    private ModuleClient? _moduleClient;
     private readonly ILogger<ModuleBackgroundService> _logger;
 
     public ModuleBackgroundService(ILogger<ModuleBackgroundService> logger) => _logger = logger;
@@ -17,22 +18,17 @@ internal class ModuleBackgroundService : BackgroundService
         ITransportSettings[] settings = { mqttSetting };
 
         // Open a connection to the Edge runtime
-        ModuleClient ioTHubModuleClient = await ModuleClient.CreateFromEnvironmentAsync(settings);
-        await ioTHubModuleClient.OpenAsync(stoppingToken);
+        _moduleClient = await ModuleClient.CreateFromEnvironmentAsync(settings);
+        await _moduleClient.OpenAsync(stoppingToken);
         _logger.LogInformation("IoT Hub module client initialized.");
 
         // Register callback to be called when a message is received by the module
-        await ioTHubModuleClient.SetInputMessageHandlerAsync("input1", PipeMessage, ioTHubModuleClient, stoppingToken);
+        await _moduleClient.SetInputMessageHandlerAsync("input1", PipeMessage, null, stoppingToken);
     }
 
     async Task<MessageResponse> PipeMessage(Message message, object userContext)
     {
         int counterValue = Interlocked.Increment(ref _counter);
-
-        if (userContext is not ModuleClient moduleClient)
-        {
-            throw new InvalidOperationException("UserContext doesn't contain " + "expected values");
-        }
 
         byte[] messageBytes = message.GetBytes();
         string messageString = Encoding.UTF8.GetString(messageBytes);
@@ -45,7 +41,7 @@ internal class ModuleBackgroundService : BackgroundService
             {
                 pipeMessage.Properties.Add(prop.Key, prop.Value);
             }
-            await moduleClient.SendEventAsync("output1", pipeMessage);
+            await _moduleClient!.SendEventAsync("output1", pipeMessage);
 
             _logger.LogInformation("Received message sent");
         }
