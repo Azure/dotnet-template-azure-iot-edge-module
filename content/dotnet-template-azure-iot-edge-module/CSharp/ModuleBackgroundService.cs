@@ -8,7 +8,9 @@ namespace SampleModule
     {
         private int counter;
         private readonly ILogger<ModuleBackgroundService> _logger;
-        public ModuleBackgroundService(ILogger<ModuleBackgroundService> logger)   => _logger = logger;
+
+        public ModuleBackgroundService(ILogger<ModuleBackgroundService> logger) => _logger = logger;
+
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             MqttTransportSettings mqttSetting = new(TransportType.Mqtt_Tcp_Only);
