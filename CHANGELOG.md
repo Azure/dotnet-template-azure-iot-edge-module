@@ -2,6 +2,9 @@
 
 [![Nuget](https://img.shields.io/nuget/v/Microsoft.Azure.IoT.Edge.Module.svg)](https://www.nuget.org/packages/Microsoft.Azure.IoT.Edge.Module/)
 
+### 3.2.0 (2022-11-29)
+* [Updated] Update template to target dotnet6
+
 ### 3.1.1 (2021-09-01)
 * [Updated] Updated the nuget template json to match the schema
 
