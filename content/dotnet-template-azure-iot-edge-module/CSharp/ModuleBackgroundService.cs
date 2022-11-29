@@ -6,7 +6,7 @@ namespace SampleModule;
 
 internal class ModuleBackgroundService : BackgroundService
 {
-    private int counter;
+    private int _counter;
     private readonly ILogger<ModuleBackgroundService> _logger;
 
     public ModuleBackgroundService(ILogger<ModuleBackgroundService> logger) => _logger = logger;
@@ -27,7 +27,7 @@ internal class ModuleBackgroundService : BackgroundService
 
     async Task<MessageResponse> PipeMessage(Message message, object userContext)
     {
-        int counterValue = Interlocked.Increment(ref counter);
+        int counterValue = Interlocked.Increment(ref _counter);
 
         if (userContext is not ModuleClient moduleClient)
         {
