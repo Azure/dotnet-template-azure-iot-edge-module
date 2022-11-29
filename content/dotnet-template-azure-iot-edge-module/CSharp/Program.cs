@@ -1,21 +1,18 @@
 namespace SampleModule
 {
+    using Microsoft.Azure.Devices.Client;
+    using Microsoft.Azure.Devices.Client.Transport.Mqtt;
     using System;
-    using System.IO;
-    using System.Runtime.InteropServices;
     using System.Runtime.Loader;
-    using System.Security.Cryptography.X509Certificates;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-    using Microsoft.Azure.Devices.Client;
-    using Microsoft.Azure.Devices.Client.Transport.Mqtt;
 
     class Program
     {
         static int counter;
 
-        static void Main(string[] args)
+        static void Main()
         {
             Init().Wait();
 
@@ -42,7 +39,7 @@ namespace SampleModule
         /// </summary>
         static async Task Init()
         {
-            MqttTransportSettings mqttSetting = new MqttTransportSettings(TransportType.Mqtt_Tcp_Only);
+            MqttTransportSettings mqttSetting = new (TransportType.Mqtt_Tcp_Only);
             ITransportSettings[] settings = { mqttSetting };
 
             // Open a connection to the Edge runtime
@@ -63,8 +60,7 @@ namespace SampleModule
         {
             int counterValue = Interlocked.Increment(ref counter);
 
-            var moduleClient = userContext as ModuleClient;
-            if (moduleClient == null)
+            if (userContext is not ModuleClient moduleClient)
             {
                 throw new InvalidOperationException("UserContext doesn't contain " + "expected values");
             }
@@ -75,16 +71,14 @@ namespace SampleModule
 
             if (!string.IsNullOrEmpty(messageString))
             {
-                using (var pipeMessage = new Message(messageBytes))
+                using var pipeMessage = new Message(messageBytes);
+                foreach (var prop in message.Properties)
                 {
-                    foreach (var prop in message.Properties)
-                    {
-                        pipeMessage.Properties.Add(prop.Key, prop.Value);
-                    }
-                    await moduleClient.SendEventAsync("output1", pipeMessage);
-                
-                    Console.WriteLine("Received message sent");
+                    pipeMessage.Properties.Add(prop.Key, prop.Value);
                 }
+                await moduleClient.SendEventAsync("output1", pipeMessage);
+
+                Console.WriteLine("Received message sent");
             }
             return MessageResponse.Completed;
         }
