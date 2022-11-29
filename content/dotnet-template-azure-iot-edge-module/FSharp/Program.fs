@@ -20,8 +20,8 @@ module SampleModule =
     let PipeMessage (message:Message) (userContext:obj) =
         let counterValue = Interlocked.Increment(counter)
 
-        let deviceClient = userContext :?> DeviceClient
-        if (isNull(deviceClient)) then
+        let moduleClient = userContext :?> ModuleClient
+        if (isNull(moduleClient)) then
             raise (InvalidOperationException("UserContext doesn't contain " + "expected values"))
 
         let messageBytes = message.GetBytes()
@@ -34,7 +34,7 @@ module SampleModule =
             message.Properties 
             |> Seq.iter (fun prop -> pipeMessage.Properties.Add(prop.Key, prop.Value))
             
-            deviceClient.SendEventAsync("output1", pipeMessage) 
+            moduleClient.SendEventAsync("output1", pipeMessage) 
             |> Async.AwaitTask 
             |> Async.Start
 
@@ -55,7 +55,7 @@ module SampleModule =
 
         // Open a connection to the Edge runtime
         let ioTHubModuleClient = 
-            DeviceClient.CreateFromConnectionString(connectionString, settings)
+            ModuleClient.CreateFromConnectionString(connectionString, settings)
 
         ioTHubModuleClient.OpenAsync() 
         |> Async.AwaitTask 
