@@ -8,12 +8,14 @@ internal class ModuleBackgroundService : BackgroundService
 {
     private int _counter;
     private ModuleClient? _moduleClient;
+    private CancellationToken _cancellationToken;
     private readonly ILogger<ModuleBackgroundService> _logger;
 
     public ModuleBackgroundService(ILogger<ModuleBackgroundService> logger) => _logger = logger;
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        _cancellationToken = stoppingToken;
         MqttTransportSettings mqttSetting = new(TransportType.Mqtt_Tcp_Only);
         ITransportSettings[] settings = { mqttSetting };
 
@@ -41,7 +43,7 @@ internal class ModuleBackgroundService : BackgroundService
             {
                 pipeMessage.Properties.Add(prop.Key, prop.Value);
             }
-            await _moduleClient!.SendEventAsync("output1", pipeMessage);
+            await _moduleClient!.SendEventAsync("output1", pipeMessage, _cancellationToken);
 
             _logger.LogInformation("Received message sent");
         }
