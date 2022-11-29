@@ -13,22 +13,28 @@ internal class ModuleBackgroundService : BackgroundService
 
     public ModuleBackgroundService(ILogger<ModuleBackgroundService> logger) => _logger = logger;
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        _cancellationToken = stoppingToken;
+        _cancellationToken = cancellationToken;
         MqttTransportSettings mqttSetting = new(TransportType.Mqtt_Tcp_Only);
         ITransportSettings[] settings = { mqttSetting };
 
         // Open a connection to the Edge runtime
         _moduleClient = await ModuleClient.CreateFromEnvironmentAsync(settings);
-        await _moduleClient.OpenAsync(stoppingToken);
+
+        // Reconnect is not implented because we'll let docker restart the process when the connection is lost
+        _moduleClient.SetConnectionStatusChangesHandler((status, reason) => 
+            _logger.LogWarning("Connection changed: Status: {status} Reason: {reason}", status, reason));
+
+        await _moduleClient.OpenAsync(cancellationToken);
+
         _logger.LogInformation("IoT Hub module client initialized.");
 
         // Register callback to be called when a message is received by the module
-        await _moduleClient.SetInputMessageHandlerAsync("input1", PipeMessage, null, stoppingToken);
+        await _moduleClient.SetInputMessageHandlerAsync("input1", ProcessMessageAsync, null, cancellationToken);
     }
 
-    async Task<MessageResponse> PipeMessage(Message message, object userContext)
+    async Task<MessageResponse> ProcessMessageAsync(Message message, object userContext)
     {
         int counterValue = Interlocked.Increment(ref _counter);
 
