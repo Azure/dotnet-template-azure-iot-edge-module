@@ -5,6 +5,7 @@
 ### 3.2.0 (2022-11-29)
 * [Updated] Update template to target dotnet6
 * [Updated] Template based on the Worker template, using BackgroundService base class
+* [Removed] F# Template
 
 ### 3.1.1 (2021-09-01)
 * [Updated] Updated the nuget template json to match the schema
