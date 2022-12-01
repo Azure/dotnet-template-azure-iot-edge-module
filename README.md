@@ -9,7 +9,7 @@ The template will set up all necessary files for you to focus on functionality p
 
 ## Get Started
 
-Make sure you have [.Net Core 3.0 SDK](https://dotnet.microsoft.com/download/dotnet-core/3.0) installed.
+Make sure you have [.NET 6.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) installed.
 
 Run `dotnet` command to install the template:
 
@@ -23,7 +23,7 @@ Templates                                         Short Name              Langua
 ---------------------------------------------------------------------------------------------------------------
 Console Application                               console                 [C#], F#, VB      Common/Console
 Class library                                     classlib                [C#], F#, VB      Common/Library
-Azure IoT Edge Module                             aziotedgemodule         [C#], F#          Console
+Azure IoT Edge Module                             aziotedgemodule         [C#]              Console
 Contoso Sample 06                                 sample06                [C#], F#          Console
 Unit Test Project                                 mstest                  [C#], F#, VB      Test/MSTest
 xUnit Test Project                                xunit                   [C#], F#, VB      Test/xUnit
