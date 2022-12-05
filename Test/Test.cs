@@ -29,7 +29,6 @@ namespace Test
     {
         private DotNetFixture fixture;
         private const string CSharp = "C#";
-        private const string FSharp = "F#";
         private const string ArchLinux64 = "linux64";
         private const string ArchWindowsNano = "windowsNano";
 
@@ -49,8 +48,6 @@ namespace Test
         [Theory]
         [InlineData(CSharp, true)]
         [InlineData(CSharp, false)]
-        [InlineData(FSharp, true)]
-        [InlineData(FSharp, false)]
         public void TestArchitecture(string lang, bool skipRestore)
         {
             var repository = "test.azurecr.io/test";
@@ -69,10 +66,6 @@ namespace Test
             if (lang == CSharp)
             {
                 filesToCheck.AddRange(new List<string> { "Program.cs", scaffoldName + ".csproj", "Dockerfile.arm64v8.debug" });
-            }
-            if (lang == FSharp)
-            {
-                filesToCheck.AddRange(new List<string> { "Program.fs", scaffoldName + ".fsproj" });
             }
 
             foreach (var file in filesToCheck)
