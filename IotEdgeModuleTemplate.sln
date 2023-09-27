@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34004.107
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleModule", "content\dotnet-template-azure-iot-edge-module\CSharp\SampleModule.csproj", "{076FF2B0-9939-48A5-A2A6-B2003637A744}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{2EA37308-0FBE-4C6D-B532-3671D33ED2BB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{076FF2B0-9939-48A5-A2A6-B2003637A744}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{076FF2B0-9939-48A5-A2A6-B2003637A744}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{076FF2B0-9939-48A5-A2A6-B2003637A744}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{076FF2B0-9939-48A5-A2A6-B2003637A744}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EA37308-0FBE-4C6D-B532-3671D33ED2BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EA37308-0FBE-4C6D-B532-3671D33ED2BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EA37308-0FBE-4C6D-B532-3671D33ED2BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EA37308-0FBE-4C6D-B532-3671D33ED2BB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {04A15845-D8E7-4F71-95F8-8B58F9FC5627}
+	EndGlobalSection
+EndGlobal

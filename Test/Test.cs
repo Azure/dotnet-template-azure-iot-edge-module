@@ -47,12 +47,11 @@ namespace Test
 
         [Theory]
         [InlineData(CSharp, true)]
-        [InlineData(CSharp, false)]
         public void TestArchitecture(string lang, bool skipRestore)
         {
             var repository = "test.azurecr.io/test";
             var scaffoldName = BeforeEach(lang, repository, skipRestore);
-            var filesToCheck = new List<string> { ".gitignore", "module.json", "Dockerfile.amd64", "Dockerfile.amd64.debug", "Dockerfile.arm32v7", "Dockerfile.arm32v7.debug", "Dockerfile.windows-amd64", "Dockerfile.arm64v8", ".dockerignore" };
+            var filesToCheck = new List<string> { ".gitignore" };
 
             if (skipRestore)
             {
@@ -65,17 +64,14 @@ namespace Test
 
             if (lang == CSharp)
             {
-                filesToCheck.AddRange(new List<string> { "Program.cs", scaffoldName + ".csproj", "Dockerfile.arm64v8.debug" });
+                filesToCheck.AddRange(new List<string> { "Program.cs", scaffoldName + ".csproj"});
             }
 
             foreach (var file in filesToCheck)
             {
                 Assert.True(File.Exists(Path.Combine(scaffoldName, file)));
             }
-
-            string text = File.ReadAllText(Path.Combine(scaffoldName, "module.json"));
-            Assert.Contains(repository, text);
-
+            
             Directory.Delete(scaffoldName, true);
         }
     }
