@@ -9,12 +9,12 @@ The template will set up all necessary files for you to focus on functionality p
 
 ## Get Started
 
-Make sure you have [.NET 6.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) installed.
+Make sure you have [.NET 7.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/7.0) installed.
 
 Run `dotnet` command to install the template:
 
 ```
-dotnet new -i Microsoft.Azure.IoT.Edge.Module
+dotnet new install Microsoft.Azure.IoT.Edge.Module
 ```
 You could find the template with short name *aziotedgemodule* in output:
 
@@ -45,52 +45,36 @@ MVC ViewStart                                     viewstart                     
 Check out the template details:
 ```
 PS C:\> dotnet new aziotedgemodule --help
-Usage: new [options]
-
-Options:
-  -h, --help          Displays help for this command.
-  -l, --list          Lists templates containing the specified name. If no name is specified, lists all templates.
-  -n, --name          The name for the output being created. If no name is specified, the name of the current directory is used.
-  -o, --output        Location to place the generated output.
-  -i, --install       Installs a source or a template pack.
-  -u, --uninstall     Uninstalls a source or a template pack.
-  --type              Filters templates based on available types. Predefined values are "project", "item" or "other".
-  --force             Forces content to be generated even if it would change existing files.
-  -lang, --language   Specifies the language of the template to create.
-
-
 Azure IoT Edge Module (C#)
 Author: Microsoft
+
+Usage:
+  dotnet new aziotedgemodule [options] [template options]
+
 Options:
-  -s|--skipRestore
-                      bool - Optional
-                      Default: false
-  
-  -r|--repository
-                      string - Optional
-                      Default: <registry>/<repo-name> 
+  -n, --name <name>       The name for the output being created. If no name is specified, the name of the output
+                          directory is used.
+  -o, --output <output>   Location to place the generated output.
+  --dry-run               Displays a summary of what would happen if the given command line were run if it would result
+                          in a template creation.
+  --force                 Forces content to be generated even if it would change existing files.
+  --no-update-check       Disables checking for the template package updates when instantiating a template.
+  --project <project>     The project that should be used for context evaluation.
+  -lang, --language <C#>  Specifies the template language to instantiate.
+  --type <project>        Specifies the template type to instantiate.
 
-  -lang|--language
-                      string - Optional
-                      Default: C#
-
-```
-
-Parameter `-s` means if you want to skip the restore of packages referenced in module project.
-
-Parameter `-r` means the Docker repository to host your Azure IoT Edge module.
-
-Now create the Azure IoT Edge module by the template with name:
+Template options:
+  -s, --skipRestore              Type: bool
+                                 Default: false
+  -r, --repository <repository>  Type: string
+                                 Default: <registry>/<repo-name>
 
 ```
-dotnet new aziotedgemodule -n <your_module_name>
-```
-
-Optionally, to create an F# module use the `-lang` or `--language` flag as follows:
 
 ```
-dotnet new aziotedgemodule -lang F# -n <your_module_name>
-``` 
+dotnet new aziotedgemodule -o <your_module_name>
+```
+
 
 ## Support
 The team monitors the issue section on regular basis and will try to assist with troubleshooting or questions related IoT Edge tools on a best effort basis.
