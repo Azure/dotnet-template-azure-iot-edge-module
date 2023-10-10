@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "SampleModule": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "IotHubConnectionString": "<module_connection_string>"
+      }
+    }
+  }
+}

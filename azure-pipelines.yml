@@ -12,6 +12,11 @@ pool:
     - ImageOverride -equals MMSUbuntu18.04TLS
 
 steps:
+- task: UseDotNet@2
+  displayName: 'Install .NET Core SDK'
+  inputs:
+    version: 7.x
+
 - task: NuGetToolInstaller@1
   inputs:
     versionSpec: 

@@ -44,8 +44,8 @@ internal class ModuleBackgroundService : BackgroundService
 
         if (!string.IsNullOrEmpty(messageString))
         {
-            using var pipeMessage = new Message(messageBytes);
-            foreach (var prop in message.Properties)
+            using Message pipeMessage = new(messageBytes);
+            foreach (KeyValuePair<string, string> prop in message.Properties)
             {
                 pipeMessage.Properties.Add(prop.Key, prop.Value);
             }
