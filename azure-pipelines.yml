@@ -13,7 +13,7 @@ pool:
 
 steps:
 - task: UseDotNet@2
-  displayName: 'Install .NET Core SDK'
+  displayName: 'Install .NET 7 SDK'
   inputs:
     version: 7.x
 
@@ -45,6 +45,11 @@ steps:
       if [[ $(Build.SourceBranch) =~ ^refs/tags/v?[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
       echo "##vso[task.setvariable variable=NUGET_PUBLISH_FLAG;]true"
       fi
+
+- task: UseDotNet@2
+  displayName: 'Install .NET 2.1 SDK'
+  inputs:
+    version: '2.1.x'
 
 - task: EsrpCodeSigning@1
   inputs:
