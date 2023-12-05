@@ -53,7 +53,7 @@ steps:
 
 - task: EsrpCodeSigning@1
   inputs:
-    ConnectedServiceName: 'Templates-Azure-IoT-Edge Sign'
+    ConnectedServiceName: 'aziotedge-pmc-v4-prod'
     FolderPath: '$(Build.ArtifactStagingDirectory)'
     Pattern: '*.nupkg'
     signConfigType: 'inlineSignParams'
