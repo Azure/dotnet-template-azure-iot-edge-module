@@ -51,7 +51,7 @@ steps:
   inputs:
     version: '2.1.x'
 
-- task: EsrpCodeSigning@1
+- task: EsrpCodeSigning@3
   inputs:
     ConnectedServiceName: 'template-aziotedge-pmc-v4-prod'
     FolderPath: '$(Build.ArtifactStagingDirectory)'
