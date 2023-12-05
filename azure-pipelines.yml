@@ -17,6 +17,11 @@ steps:
   inputs:
     version: 7.x
 
+- task: UseDotNet@2
+  displayName: 'Install .NET 6 SDK'
+  inputs:
+    version: 6.x
+
 - task: NuGetToolInstaller@1
   inputs:
     versionSpec: 
@@ -51,9 +56,9 @@ steps:
   inputs:
     version: '2.1.x'
 
-- task: EsrpCodeSigning@1
+- task: EsrpCodeSigning@3
   inputs:
-    ConnectedServiceName: 'Templates-Azure-IoT-Edge Sign'
+    ConnectedServiceName: 'template-aziotedge-pmc-v4-prod'
     FolderPath: '$(Build.ArtifactStagingDirectory)'
     Pattern: '*.nupkg'
     signConfigType: 'inlineSignParams'
