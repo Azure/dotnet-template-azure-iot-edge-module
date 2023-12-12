@@ -13,9 +13,14 @@ pool:
 
 steps:
 - task: UseDotNet@2
-  displayName: 'Install .NET Core SDK'
+  displayName: 'Install .NET 7 SDK'
   inputs:
     version: 7.x
+
+- task: UseDotNet@2
+  displayName: 'Install .NET 6 SDK'
+  inputs:
+    version: 6.x
 
 - task: NuGetToolInstaller@1
   inputs:
@@ -46,9 +51,14 @@ steps:
       echo "##vso[task.setvariable variable=NUGET_PUBLISH_FLAG;]true"
       fi
 
-- task: EsrpCodeSigning@1
+- task: UseDotNet@2
+  displayName: 'Install .NET 2.1 SDK'
   inputs:
-    ConnectedServiceName: 'Templates-Azure-IoT-Edge Sign'
+    version: '2.1.x'
+
+- task: EsrpCodeSigning@3
+  inputs:
+    ConnectedServiceName: 'template-aziotedge-pmc-v4-prod'
     FolderPath: '$(Build.ArtifactStagingDirectory)'
     Pattern: '*.nupkg'
     signConfigType: 'inlineSignParams'
