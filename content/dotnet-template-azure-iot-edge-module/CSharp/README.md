@@ -1,4 +1,4 @@
-# IoT Edge Module Template for .NET 7
+# IoT Edge Module Template for .NET 8
 
 This project leverages the latest dotnet features to create docker images without using a `Dockerfile`. See more details in https://github.com/dotnet/sdk-container-builds
 
