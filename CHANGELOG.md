@@ -2,6 +2,15 @@
 
 [![Nuget](https://img.shields.io/nuget/v/Microsoft.Azure.IoT.Edge.Module.svg)](https://www.nuget.org/packages/Microsoft.Azure.IoT.Edge.Module/)
 
+
+### 8.0.0 (2024-04-22)
+
+* [Updated] Updates template to target dotnet8
+
+### 7.0.1 (2023-12-12)
+
+* [Updated] Updates template to target dotnet7
+
 ### 3.2.0 (2022-11-29)
 * [Updated] Update template to target dotnet6
 * [Updated] Template based on the Worker template, using BackgroundService base class
